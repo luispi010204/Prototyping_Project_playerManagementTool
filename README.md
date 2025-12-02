@@ -24,15 +24,23 @@
 
 ## 1. Einordnung & Zielsetzung
 Kurz beschreiben, welches Problem adressiert wird und welches Ergebnis angestrebt ist.
-- **Kontext & Problem:** _[1–3 Sätze]_  
-- **Ziele:** _[stichwortartig oder 2–4 Sätze]_  
+- **Kontext & Problem:** _[1–3 Sätze]_
+Trainer kleiner Sportteams haben häufig keinen strukturierten Überblick über ihre Spieler, deren Verfügbarkeit und mögliche Aufstellungen. Informationen darüber, wer für das nächste Spiel einsatzbereit ist, müssen oft manuell oder über persönliche Rückfragen eingeholt werden. Dadurch entsteht schnell Chaos, besonders wenn Verletzungen auftreten und sich die Verfügbarkeit kurzfristig ändert.  
+- **Ziele:** _[stichwortartig oder 2–4 Sätze]_
+Das Tool soll eine einfache und zentrale Möglichkeit bieten, Spieler anzulegen, zu verwalten und ihre aktuelle Einsatzfähigkeit festzuhalten. Trainer sollen jederzeit sehen können, welche Spieler verfügbar oder verletzt sind und auf dieser Basis potenzielle Aufstellungen planen können. Kernfunktionen sind das Erfassen, Bearbeiten und Löschen von Spielern sowie das Dokumentieren von Verletzungen oder Ausfällen.  
 - **Abgrenzung [Optional]:** _Was gehört explizit nicht zum Umfang?_
-
+Nicht Bestandteil des Projekts sind Taktikvisualisierungen, Statistiken oder Live-Tracking der Spieler. Das Tool konzentriert sich bewusst auf die Kernverwaltung der Spielerverfügbarkeit ohne zusätzliche Analyse- oder Monitoring-Funktionen.
 ## 2. Zielgruppe & Stakeholder
 Wem nützt die Lösung, wer ist beteiligt oder betroffen?
-- **Primäre Zielgruppe:** _[kurz beschreiben]_  
+- **Primäre Zielgruppe:** _[kurz beschreiben]_ Die Hauptzielgruppe sind Club-Manager und Coaches kleiner Sportteams, die einen klaren Überblick über ihren Spielerkader benötigen. Sie verwalten den Roster, treffen Entscheidungen für Spiele und müssen wissen, welche Spieler aktuell verfügbar, verletzt oder eingeschränkt einsatzbereit sind.  
 - **Weitere Stakeholder [Optional]:** _[z. B. Verwaltung, Geschäftsleitung]_  
+ 
+  - **Assistant Coaches:** profitieren von einem übersichtlichen Zugriff auf alle Spielerinformationen, um Trainings und Spiele besser planen zu können.  
+  - **Spieler:** auch wenn sie das Tool nicht aktiv bedienen, betrifft sie die Verwaltung ihrer Verfügbarkeit und Verletzungen direkt – insbesondere im Hinblick auf Kommunikation, Wiedereinstiegszeit und Belastungsmanagement.
 - **Annahmen [Optional]:** _[welche Hypothesen werden geprüft?]_
+  - Die Trainer und Manager haben wenig Zeit und benötigen ein einfaches, schnelles Tool, um Übersicht über Verfügbarkeiten, Verletzungen und den Kaderstatus zu behalten.  
+  - Die Verfügbarkeit der Spieler ist oft unklar oder wird spät kommuniziert, weshalb eine zentrale Dokumentation entscheidend ist.  
+  - Wiederkehrende Verletzungen und mentale Belastungen sind reale Herausforderungen im Teamalltag, werden aber im Rahmen dieses Tools nicht tiefgehend behandelt – der Fokus liegt rein auf der Verfügbarkeitsverwaltung. 
 
 ## 3. Anforderungen & Umfang
 Beschreibt den verbindlichen Umfang gemäss Übungen und allfällige Erweiterungen.
