@@ -1,7 +1,4 @@
-import db from "$lib/server/db.js";
-
-export async function load() {
-  return {
-    players: await db.getPlayers(),
-  }
+export async function load({ parent }) {
+  const parentData = await parent();
+  return { players: parentData.players || [] };
 }

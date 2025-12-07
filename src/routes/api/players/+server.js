@@ -1,18 +1,28 @@
 import { json } from "@sveltejs/kit";
-import { getDb } from "$lib/server/db";
+import {
+  insertPlayer,
+  listPlayers,
+  normalizePlayerPayload,
+  findPlayer,
+} from "$lib/server/db.js";
+
+function badRequest(message) {
+  return json({ error: message }, { status: 400 });
+}
 
 export async function GET() {
-    try {
-        const db = await getDb();
-        const players = await db.collection("players").find({}).toArray();
+  const players = await listPlayers();
+  return json(players);
+}
 
-        return json({
-            ok: true,
-            count: players.length,
-            players
-        });
-    } catch (err) {
-        console.error("DB Error:", err);
-        return json({ ok: false, error: "Failed to fetch players" }, { status: 500 });
-    }
+export async function POST({ request }) {
+  const body = await request.json();
+  const { error, payload } = normalizePlayerPayload(body, { partial: false });
+  if (error) {
+    return badRequest(error);
+  }
+
+  const newId = await insertPlayer(payload);
+  const created = await findPlayer(newId);
+  return json(created, { status: 201 });
 }
