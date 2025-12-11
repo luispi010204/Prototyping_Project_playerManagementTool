@@ -1,4 +1,6 @@
 <script>
+  import { goto } from "$app/navigation";
+
   export let data;
   const players = data.players || [];
 
@@ -10,6 +12,10 @@
     if (!player) return "Unnamed Player";
     const name = typeof player.name === "string" ? player.name.trim() : "";
     return name || "Unnamed Player";
+  }
+
+  function openPlayer(id) {
+    goto(`/players/${id}`);
   }
 </script>
 
@@ -33,7 +39,14 @@
       <div class="empty-row">No players available</div>
     {:else}
       {#each players as player, index}
-        <div class="table-row" class:injured={player.isInjured}>
+        <div
+          class="table-row"
+          class:injured={player.isInjured}
+          role="link"
+          tabindex="0"
+          on:click={() => openPlayer(player._id)}
+          on:keydown={(e) => (e.key === "Enter" || e.key === " ") && openPlayer(player._id)}
+        >
           <div class="cell player-cell">
             <div class="name">{displayName(player)}</div>
             <div class="number">#{index + 1}</div>
@@ -107,6 +120,7 @@
     border-top: 1px solid #1f2030;
     color: #e1e1e6;
     font-size: 14px;
+    cursor: pointer;
   }
 
   .table-row.injured {

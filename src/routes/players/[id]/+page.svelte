@@ -22,6 +22,21 @@
     joinedYear: player.joinedYear || ""
   };
 
+  $: if (data && data.player && data.player !== player) {
+    player = data.player;
+    editMode = false;
+    editPhotoFile = null;
+    editError = "";
+    editForm = {
+      name: player.name || "",
+      position: player.position || "PG",
+      age: player.age || "",
+      height: player.height || "",
+      weight: player.weight || "",
+      joinedYear: player.joinedYear || ""
+    };
+  }
+
   $: injuryCount = (player.injuries || []).length;
   $: playerNumber = players.findIndex((p) => p._id === player._id) + 1;
 
