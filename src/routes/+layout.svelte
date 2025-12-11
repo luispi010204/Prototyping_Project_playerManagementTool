@@ -14,9 +14,9 @@
     age: "",
     height: "",
     weight: "",
-    joinedYear: "",
-    photoUrl: ""
+    joinedYear: ""
   };
+  let photoFile = null;
 
   $: players = data.players || players;
   $: currentPath = $page.url.pathname;
@@ -37,10 +37,10 @@
       age: "",
       height: "",
       weight: "",
-      joinedYear: "",
-      photoUrl: ""
+      joinedYear: ""
     };
     addError = "";
+    photoFile = null;
   }
 
   function openAddModal() {
@@ -53,27 +53,28 @@
     addError = "";
   }
 
+  function handlePhotoChange(event) {
+    const [file] = event.target.files || [];
+    photoFile = file || null;
+  }
+
   async function submitAddPlayer(event) {
     event.preventDefault();
     addError = "";
     isSubmitting = true;
     try {
-      const payload = {
-        name: form.name.trim(),
-        position: form.position,
-        age: Number(form.age),
-        height: Number(form.height),
-        weight: form.weight === "" ? undefined : Number(form.weight),
-        joinedYear: Number(form.joinedYear),
-        photoUrl: form.photoUrl.trim(),
-        isInjured: false
-      };
+      const payload = new FormData();
+      payload.append("name", form.name.trim());
+      payload.append("position", form.position);
+      payload.append("age", form.age);
+      payload.append("height", form.height);
+      if (form.weight !== "") payload.append("weight", form.weight);
+      payload.append("joinedYear", form.joinedYear);
+      if (photoFile) {
+        payload.append("photo", photoFile, photoFile.name);
+      }
 
-      const res = await fetch("/api/players", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
+      const res = await fetch("/api/players", { method: "POST", body: payload });
 
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
@@ -200,8 +201,8 @@
           <input required type="number" placeholder="Year" bind:value={form.joinedYear} />
         </label>
         <label>
-          <span>Photo URL (optional)</span>
-          <input placeholder="https://..." bind:value={form.photoUrl} />
+          <span>Player Photo (optional)</span>
+          <input type="file" accept="image/*" on:change={handlePhotoChange} />
         </label>
 
         {#if addError}

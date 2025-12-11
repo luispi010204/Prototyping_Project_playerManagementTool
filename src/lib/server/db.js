@@ -4,7 +4,7 @@ import { MONGODB_URI } from "$env/static/private";
 const DB_NAME = "PlayerManagementTool";
 const PLAYER_COLLECTION = "players";
 const POSITIONS = ["PG", "SG", "SF", "PF", "C"];
-const HEIGHT_MIN = 185;
+const HEIGHT_MIN = 170;
 const HEIGHT_MAX = 216;
 const BMI_MIN = 21.5;
 const BMI_MAX = 24.5;
@@ -43,7 +43,7 @@ export function weightRangeForHeight(heightCm) {
 export function normalizeHeightWeight(heightInput, weightInput, existingWeight) {
   const height = Number(heightInput);
   if (!Number.isFinite(height) || height < HEIGHT_MIN || height > HEIGHT_MAX) {
-    const msg = "Height must be between 185 and 216 cm";
+    const msg = "Height must be between 170 and 216 cm";
     return { error: msg };
   }
 

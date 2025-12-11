@@ -9,6 +9,18 @@
   let actionError = "";
   let loadingAction = false;
   let injuryForm = { date: "", description: "", expectedRecovery: "" };
+  let editMode = false;
+  let editError = "";
+  let editLoading = false;
+  let editPhotoFile = null;
+  let editForm = {
+    name: player.name || "",
+    position: player.position || "PG",
+    age: player.age || "",
+    height: player.height || "",
+    weight: player.weight || "",
+    joinedYear: player.joinedYear || ""
+  };
 
   $: injuryCount = (player.injuries || []).length;
   $: playerNumber = players.findIndex((p) => p._id === player._id) + 1;
@@ -111,6 +123,66 @@
       loadingAction = false;
     }
   }
+
+  function beginEdit() {
+    editForm = {
+      name: player.name || "",
+      position: player.position || "PG",
+      age: player.age || "",
+      height: player.height || "",
+      weight: player.weight || "",
+      joinedYear: player.joinedYear || ""
+    };
+    editError = "";
+    editMode = true;
+  }
+
+  function cancelEdit() {
+    editMode = false;
+    editError = "";
+    editPhotoFile = null;
+  }
+
+  function handleEditPhotoChange(event) {
+    const [file] = event.target.files || [];
+    editPhotoFile = file || null;
+  }
+
+  async function saveEdit() {
+    editError = "";
+    editLoading = true;
+    try {
+      const payload = new FormData();
+      payload.append("name", editForm.name.trim());
+      payload.append("position", editForm.position);
+      payload.append("age", editForm.age);
+      payload.append("height", editForm.height);
+      if (editForm.weight !== "") payload.append("weight", editForm.weight);
+      payload.append("joinedYear", editForm.joinedYear);
+      if (editPhotoFile) {
+        payload.append("photo", editPhotoFile, editPhotoFile.name);
+      }
+
+      const res = await fetch(`/api/players/${player._id}`, {
+        method: "PATCH",
+        body: payload
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        editError = err.error || "Could not update player";
+        return;
+      }
+
+      player = await res.json();
+      editMode = false;
+      await invalidateAll();
+    } catch (err) {
+      editError = "Unexpected error while updating player";
+    } finally {
+      editLoading = false;
+    }
+  }
 </script>
 
 <div class="profile-grid">
@@ -131,26 +203,87 @@
         <span class={badgeClass()}>{badgeText()}</span>
       </div>
 
-      <div class="meta">
-        <div class="row">
-          <span class="label">AGE</span>
-          <span class="value">{player.age}</span>
+      {#if editMode}
+        <div class="edit-form">
+          <div class="form-grid">
+            <label>
+              <span>Player Name</span>
+              <input bind:value={editForm.name} required />
+            </label>
+            <label>
+              <span>Position</span>
+              <select bind:value={editForm.position}>
+                <option value="PG">PG</option>
+                <option value="SG">SG</option>
+                <option value="SF">SF</option>
+                <option value="PF">PF</option>
+                <option value="C">C</option>
+              </select>
+            </label>
+            <label>
+              <span>Age</span>
+              <input type="number" min="1" bind:value={editForm.age} required />
+            </label>
+            <label>
+              <span>Member Since</span>
+              <input type="number" bind:value={editForm.joinedYear} required />
+            </label>
+            <label>
+              <span>Height (cm)</span>
+              <input type="number" min="170" max="240" bind:value={editForm.height} required />
+            </label>
+            <label>
+              <span>Weight (kg)</span>
+              <input type="number" step="0.1" bind:value={editForm.weight} />
+            </label>
+            <label>
+              <span>Player Photo</span>
+              <input type="file" accept="image/*" on:change={handleEditPhotoChange} />
+            </label>
+          </div>
+          {#if editError}
+            <div class="error">{editError}</div>
+          {/if}
+          <div class="edit-actions">
+            <button class="save" on:click|preventDefault={saveEdit} disabled={editLoading}>
+              {editLoading ? "Saving..." : "Save"}
+            </button>
+            <button class="cancel" on:click={cancelEdit} type="button" disabled={editLoading}>
+              Cancel
+            </button>
+          </div>
         </div>
-        <div class="row">
-          <span class="label">MEMBER SINCE</span>
-          <span class="value">{player.joinedYear}</span>
+      {:else}
+        <div class="meta">
+          <div class="row">
+            <span class="label">AGE</span>
+            <span class="value">{player.age}</span>
+          </div>
+          <div class="row">
+            <span class="label">MEMBER SINCE</span>
+            <span class="value">{player.joinedYear}</span>
+          </div>
+          <div class="row">
+            <span class="label">HEIGHT</span>
+            <span class="value">{player.height} cm</span>
+          </div>
+          <div class="row">
+            <span class="label">WEIGHT</span>
+            <span class="value">{player.weight} kg</span>
+          </div>
         </div>
-        <div class="row">
-          <span class="label">HEIGHT</span>
-          <span class="value">{player.height} cm</span>
-        </div>
-        <div class="row">
-          <span class="label">WEIGHT</span>
-          <span class="value">{player.weight} kg</span>
-        </div>
-      </div>
+      {/if}
 
       <div class="profile-actions">
+        <button class="ghost edit" on:click={beginEdit} disabled={editMode}>
+          <svg class="edit-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M3 17.25V21h3.75l11-11-3.75-3.75-11 11ZM20.71 7.04c.19-.19.29-.44.29-.71 0-.27-.1-.52-.29-.71l-2.34-2.34a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 3.75 3.75 1.83-1.82Z"
+              fill="currentColor"
+            />
+          </svg>
+          Edit
+        </button>
         <button class="ghost danger" on:click={deletePlayer} disabled={loadingAction}>
           Delete Player
         </button>
@@ -344,6 +477,7 @@
     gap: 10px;
   }
 
+
   .meta {
     margin-top: 14px;
     display: grid;
@@ -395,6 +529,82 @@
     margin-top: 16px;
     display: flex;
     gap: 10px;
+  }
+
+  .ghost.edit {
+    border-color: #3b5bff;
+    color: #cfd2e9;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .edit-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .edit-form {
+    margin-top: 12px;
+    background: #1c1d2a;
+    border: 1px solid #2c2f45;
+    border-radius: 12px;
+    padding: 14px;
+    display: grid;
+    gap: 12px;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 14px;
+  }
+
+  .form-grid label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    color: #9ba0b5;
+    font-size: 12px;
+  }
+
+  .form-grid input,
+  .form-grid select {
+    background: #181824;
+    border: 1px solid #2c2d3f;
+    color: #e1e1e6;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 14px;
+  }
+
+  .form-grid input:focus,
+  .form-grid select:focus {
+    outline: 1px solid #3b5bff;
+  }
+
+  .edit-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+
+  .edit-actions button {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .edit-actions .save {
+    background: #3b5bff;
+    color: #fff;
+  }
+
+  .edit-actions .cancel {
+    background: #2a2b3d;
+    color: #d9daeb;
   }
 
   .ghost {
