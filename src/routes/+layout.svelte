@@ -43,6 +43,10 @@
     photoFile = null;
   }
 
+  function navigateToPlayer(id) {
+    goto(`/players/${id}`);
+  }
+
   function openAddModal() {
     resetForm();
     showAddModal = true;
@@ -139,10 +143,13 @@
         <div class="empty">No players yet</div>
       {:else}
         {#each players as player, index}
-          <a
+          <div
             class="player-row"
             class:active={isActivePlayer(player._id)}
-            href={`/players/${player._id}`}
+            role="link"
+            tabindex="0"
+            on:click={() => navigateToPlayer(player._id)}
+            on:keydown={(e) => (e.key === "Enter" || e.key === " ") && navigateToPlayer(player._id)}
           >
             <span class="status" style={`background:${statusColor(player.isInjured)}`}></span>
             <div class="player-main">
@@ -152,7 +159,7 @@
                 <span class="number">#{index + 1}</span>
               </div>
             </div>
-          </a>
+          </div>
         {/each}
       {/if}
     </div>
