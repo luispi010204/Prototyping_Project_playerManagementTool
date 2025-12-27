@@ -43,8 +43,11 @@
     photoFile = null;
   }
 
-  function navigateToPlayer(id) {
-    goto(`/players/${id}`);
+  async function navigateToPlayer(id) {
+    if (activePlayerId === id) return;
+    await goto(`/players/${id}`);
+    window.location.reload();
+    await invalidateAll();
   }
 
   function openAddModal() {
@@ -196,8 +199,8 @@
           <input required type="number" min="1" placeholder="Age" bind:value={form.age} />
         </label>
         <label>
-          <span>Height (185–216)</span>
-          <input required type="number" min="185" max="216" placeholder="cm" bind:value={form.height} />
+          <span>Height (170–216)</span>
+          <input required type="number" min="170" max="216" placeholder="cm" bind:value={form.height} />
         </label>
         <label>
           <span>Weight (optional)</span>

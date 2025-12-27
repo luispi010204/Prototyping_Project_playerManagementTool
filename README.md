@@ -1,4 +1,4 @@
-# Projektdokumentation – [Projekttitel]
+# Projektdokumentation – Prototyping: PlayerManagementTool
 
 ## Inhaltsverzeichnis
 
@@ -24,9 +24,9 @@
 
 ## 1. Einordnung & Zielsetzung
 Kurz beschreiben, welches Problem adressiert wird und welches Ergebnis angestrebt ist.
-- **Kontext & Problem:** _[1–3 Sätze]_
+- **Kontext & Problem:** 
 Trainer kleiner Sportteams haben häufig keinen strukturierten Überblick über ihre Spieler, deren Verfügbarkeit und mögliche Aufstellungen. Informationen darüber, wer für das nächste Spiel einsatzbereit ist, müssen oft manuell oder über persönliche Rückfragen eingeholt werden. Dadurch entsteht schnell Chaos, besonders wenn Verletzungen auftreten und sich die Verfügbarkeit kurzfristig ändert.  
-- **Ziele:** _[stichwortartig oder 2–4 Sätze]_
+- **Ziele:** 
 Das Tool soll eine einfache und zentrale Möglichkeit bieten, Spieler anzulegen, zu verwalten und ihre aktuelle Einsatzfähigkeit festzuhalten. Trainer sollen jederzeit sehen können, welche Spieler verfügbar oder verletzt sind und auf dieser Basis potenzielle Aufstellungen planen können. Kernfunktionen sind das Erfassen, Bearbeiten und Löschen von Spielern sowie das Dokumentieren von Verletzungen oder Ausfällen.  
 - **Abgrenzung [Optional]:** _Was gehört explizit nicht zum Umfang?_
 Nicht Bestandteil des Projekts sind Taktikvisualisierungen, Statistiken oder Live-Tracking der Spieler. Das Tool konzentriert sich bewusst auf die Kernverwaltung der Spielerverfügbarkeit ohne zusätzliche Analyse- oder Monitoring-Funktionen.
@@ -67,7 +67,7 @@ Die Durchführung erfolgt phasenbasiert; dokumentieren Sie die wichtigsten Ergeb
 
 ### 4.4 Prototype
 - **Kernfunktionalität:** _[Kurzbeschreibung der Workflows/Funktionen]_  
-- **Deployment:** _[URL]_  
+- **Deployment:** https://prototypingplayermanagementtool.netlify.app
 
 #### 4.4.1. Entwurf (Design)
 Beschreibt die Gestaltung und Interaktion.
@@ -85,7 +85,7 @@ Fasst die technische Realisierung zusammen.
 - **Besondere Entscheidungen:** _[z. B. Trade‑offs, Vereinfachungen]_  
 
 ### 4.5 Validate
-- **URL der getesteten Version** (separat deployt)
+- **URL der getesteten Version** (https://testversionofplayermanagementtool.netlify.app)
 - **Ziele der Prüfung:** _[welche Fragen sollen beantwortet werden?]_  
 - **Vorgehen:** _[moderiert/unmoderiert; remote/on‑site]_  
 - **Stichprobe:** _[Mit wem wurde getestet? Profil; Anzahl]_  

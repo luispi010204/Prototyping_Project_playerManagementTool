@@ -8,6 +8,8 @@
   let injuryFormOpen = false;
   let actionError = "";
   let loadingAction = false;
+  let overridePlayer = null;
+  let lastPlayerId = player ? player._id : null;
   let injuryForm = { date: "", description: "", expectedRecovery: "" };
   let editMode = false;
   let editError = "";
@@ -22,8 +24,15 @@
     joinedYear: player.joinedYear || ""
   };
 
-  $: if (data && data.player && data.player !== player) {
-    player = data.player;
+  $: if (data && data.player && overridePlayer && data.player._id !== overridePlayer._id) {
+    overridePlayer = null;
+  }
+
+  $: player = overridePlayer || data.player;
+  $: status = player && player.isInjured ? "out - injured" : "active";
+
+  $: if (player && player._id !== lastPlayerId) {
+    lastPlayerId = player._id;
     editMode = false;
     editPhotoFile = null;
     editError = "";
@@ -47,11 +56,11 @@
   }
 
   function badgeText() {
-    return player.isInjured ? "Out – Injured" : "Active";
+    return status;
   }
 
   function badgeClass() {
-    return player.isInjured ? "badge injured" : "badge active";
+    return player && player.isInjured ? "badge injured" : "badge active";
   }
 
   function initials(name) {
@@ -84,10 +93,13 @@
         actionError = err.error || "Could not add injury";
         return;
       }
-      player = await res.json();
+      const updatedPlayer = await res.json();
+      overridePlayer = updatedPlayer;
+      player = updatedPlayer;
       injuryFormOpen = false;
       injuryForm = { date: "", description: "", expectedRecovery: "" };
       await invalidateAll();
+      window.location.reload();
     } catch (err) {
       actionError = "Unexpected error while reporting injury";
     } finally {
@@ -107,8 +119,11 @@
         actionError = err.error || "Could not mark recovered";
         return;
       }
-      player = await res.json();
+      const updatedPlayer = await res.json();
+      overridePlayer = updatedPlayer;
+      player = updatedPlayer;
       await invalidateAll();
+      window.location.reload();
     } catch (err) {
       actionError = "Unexpected error while updating status";
     } finally {
@@ -334,7 +349,12 @@
         {/each}
       </div>
       <div class="injury-actions">
-        <button class="recover-btn" on:click={markRecovered} disabled={loadingAction}>
+        <button
+          class="recover-btn"
+          class:disabled={!player.isInjured}
+          on:click={markRecovered}
+          disabled={!player.isInjured || loadingAction}
+        >
           Mark as Recovered
         </button>
         <button class="report-btn" on:click={() => (injuryFormOpen = true)}>
@@ -697,6 +717,14 @@
     cursor: pointer;
   }
 
+  .recover-btn.disabled,
+  .recover-btn:disabled {
+    background: #2d2e3b;
+    color: #8f93ac;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
   .report-btn {
     background: #ff3a3a;
     color: #fff;
@@ -722,6 +750,11 @@
     gap: 10px;
     padding: 20px;
     text-align: center;
+  }
+
+  .injury-empty h3,
+  .injury-empty p {
+    color: #ffffff;
   }
 
   .green-icon {
