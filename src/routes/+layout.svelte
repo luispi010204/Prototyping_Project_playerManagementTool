@@ -245,6 +245,8 @@
     flex-direction: column;
     gap: 18px;
     box-shadow: 4px 0 24px rgba(0, 0, 0, 0.45);
+    min-height: 100vh;
+    position: relative;
   }
 
   .branding .title {
@@ -295,6 +297,7 @@
     gap: 8px;
     overflow-y: auto;
     padding-right: 4px;
+    min-height: 0;
   }
 
   .player-row {
@@ -375,6 +378,10 @@
     letter-spacing: 0.3px;
     cursor: pointer;
     box-shadow: 0 10px 30px rgba(59, 91, 255, 0.3);
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    margin-top: auto;
   }
 
   .add-btn:hover {

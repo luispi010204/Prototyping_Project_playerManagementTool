@@ -323,7 +323,7 @@
   </div>
 
   <div class="card injury-card">
-    {#if injuryCount === 0}
+    {#if player && player.injuries && player.injuries.length === 0}
       <button class="report-btn top-right" on:click={() => (injuryFormOpen = true)}>
         Report New Injury
       </button>
@@ -356,9 +356,6 @@
           disabled={!player.isInjured || loadingAction}
         >
           Mark as Recovered
-        </button>
-        <button class="report-btn" on:click={() => (injuryFormOpen = true)}>
-          Report New Injury
         </button>
       </div>
     {/if}
