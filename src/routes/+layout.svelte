@@ -139,9 +139,9 @@
 
 <svelte:head>
   <style>
-    :global(body) {
+    :global(html, body) {
       margin: 0;
-      background: #0b0b0f;
+      background: #000;
       color: #e1e1e6;
       font-family: "Space Grotesk", "Segoe UI", sans-serif;
     }
@@ -437,9 +437,9 @@
     background: #4a66ff;
   }
 
-  .content {
-    padding: 28px 32px;
-  }
+    .content {
+      padding: 48px 32px 28px;
+    }
 
   .modal-backdrop {
     position: fixed;
@@ -550,9 +550,9 @@
       max-height: 180px;
       min-width: 240px;
     }
-    .content {
-      padding: 18px;
-    }
+      .content {
+        padding: 38px 18px 18px;
+      }
     .modal {
       width: 92%;
     }

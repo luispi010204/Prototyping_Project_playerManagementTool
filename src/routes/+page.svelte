@@ -20,9 +20,9 @@
 </script>
 
 <div class="page">
-  <div class="header">
-    <h1>TEAM ROSTER</h1>
-    <div class="underline"></div>
+  <div class="tabs">
+    <button class="tab active">Team Roster</button>
+    <button class="tab" on:click={() => goto("/planning")}>Trainings & Games Planning</button>
   </div>
 
   <div class="table">
@@ -75,19 +75,35 @@
     gap: 18px;
   }
 
-  .header h1 {
-    margin: 0;
-    color: #fff;
-    font-size: 28px;
-    letter-spacing: 0.6px;
+  .tabs {
+    display: flex;
+    gap: 18px;
   }
 
-  .underline {
-    width: 160px;
+  .tab {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 22px;
+    font-weight: 800;
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .tab::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -8px;
     height: 3px;
-    background: #3b5bff;
-    margin-top: 8px;
+    background: transparent;
     border-radius: 4px;
+  }
+
+  .tab.active::after {
+    background: #3b5bff;
   }
 
   .table {
