@@ -1,6 +1,7 @@
 <script>
   import { page } from "$app/stores";
   import { goto, invalidateAll } from "$app/navigation";
+  import { onMount } from "svelte";
 
   export let data;
 
@@ -8,6 +9,7 @@
   let showAddModal = false;
   let addError = "";
   let isSubmitting = false;
+  let isAuthed = false;
   let form = {
     name: "",
     position: "PG",
@@ -108,6 +110,31 @@
   function isActivePlayer(playerId) {
     return currentPath.startsWith("/players/") && activePlayerId === playerId;
   }
+
+  function logout() {
+    sessionStorage.removeItem("authUser");
+    isAuthed = false;
+    goto("/login");
+  }
+
+  onMount(() => {
+    const checkAuth = (path) => {
+      const authed = !!sessionStorage.getItem("authUser");
+      isAuthed = authed;
+      if (!authed && path !== "/login") {
+        goto("/login");
+      }
+      if (authed && path === "/login") {
+        goto("/");
+      }
+    };
+
+    const unsubscribe = page.subscribe(($page) => {
+      checkAuth($page.url.pathname);
+    });
+
+    return () => unsubscribe();
+  });
 </script>
 
 <svelte:head>
@@ -125,55 +152,62 @@
   </style>
 </svelte:head>
 
-<div class="app-shell">
-  <aside class="sidebar">
-    <div class="branding">
-      <div class="title">ROSTER</div>
-      <div class="subtitle">Player Management</div>
-    </div>
+{#if currentPath === "/login"}
+  <slot />
+{:else}
+  <div class="app-shell">
+    {#if isAuthed}
+      <button class="logout-btn" on:click={logout}>Logout</button>
+    {/if}
+    <aside class="sidebar">
+      <div class="branding">
+        <div class="title">ROSTER</div>
+        <div class="subtitle">Player Management</div>
+      </div>
 
-    <button
-      class="overview-btn"
-      class:active={currentPath === "/"}
-      on:click={() => goto("/")}
-    >
-      <span class="left-bar"></span>
-      TEAM OVERVIEW
-    </button>
+      <button
+        class="overview-btn"
+        class:active={currentPath === "/"}
+        on:click={() => goto("/")}
+      >
+        <span class="left-bar"></span>
+        TEAM OVERVIEW
+      </button>
 
-    <div class="player-list">
-      {#if players.length === 0}
-        <div class="empty">No players yet</div>
-      {:else}
-        {#each players as player, index}
-          <div
-            class="player-row"
-            class:active={isActivePlayer(player._id)}
-            role="link"
-            tabindex="0"
-            on:click={() => navigateToPlayer(player._id)}
-            on:keydown={(e) => (e.key === "Enter" || e.key === " ") && navigateToPlayer(player._id)}
-          >
-            <span class="status" style={`background:${statusColor(player.isInjured)}`}></span>
-            <div class="player-main">
-              <div class="player-name">{displayName(player)}</div>
-              <div class="player-meta">
-                <span class="position">{player.position}</span>
-                <span class="number">#{index + 1}</span>
+      <div class="player-list">
+        {#if players.length === 0}
+          <div class="empty">No players yet</div>
+        {:else}
+          {#each players as player, index}
+            <div
+              class="player-row"
+              class:active={isActivePlayer(player._id)}
+              role="link"
+              tabindex="0"
+              on:click={() => navigateToPlayer(player._id)}
+              on:keydown={(e) => (e.key === "Enter" || e.key === " ") && navigateToPlayer(player._id)}
+            >
+              <span class="status" style={`background:${statusColor(player.isInjured)}`}></span>
+              <div class="player-main">
+                <div class="player-name">{displayName(player)}</div>
+                <div class="player-meta">
+                  <span class="position">{player.position}</span>
+                  <span class="number">#{index + 1}</span>
+                </div>
               </div>
             </div>
-          </div>
-        {/each}
-      {/if}
-    </div>
+          {/each}
+        {/if}
+      </div>
 
-    <button class="add-btn" on:click={openAddModal}>+ Add Player</button>
-  </aside>
+      <button class="add-btn" on:click={openAddModal}>+ Add Player</button>
+    </aside>
 
-  <main class="content">
-    <slot />
-  </main>
-</div>
+    <main class="content">
+      <slot />
+    </main>
+  </div>
+{/if}
 
 {#if showAddModal}
   <div class="modal-backdrop" on:click={closeAddModal}>
@@ -382,6 +416,21 @@
     bottom: 0;
     left: 0;
     margin-top: auto;
+  }
+
+  .logout-btn {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 100;
+    background: #3b5bff;
+    color: #fff;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(59, 91, 255, 0.3);
   }
 
   .add-btn:hover {
