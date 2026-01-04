@@ -3,6 +3,7 @@ import { MONGODB_URI } from "$env/static/private";
 
 const DB_NAME = "PlayerManagementTool";
 const PLAYER_COLLECTION = "players";
+const EVENT_COLLECTION = "events";
 const POSITIONS = ["PG", "SG", "SF", "PF", "C"];
 const HEIGHT_MIN = 170;
 const HEIGHT_MAX = 216;
@@ -133,6 +134,11 @@ export function serializePlayer(player) {
   return serialized;
 }
 
+export function serializeEvent(event) {
+  if (!event) return null;
+  return { ...event, _id: event._id?.toString() };
+}
+
 export async function listPlayers() {
   const db = await getDb();
   const collection = db.collection(PLAYER_COLLECTION);
@@ -221,4 +227,58 @@ export async function healPlayer(id) {
   );
   const updated = await collection.findOne({ _id: queryId });
   return serializePlayer(updated);
+}
+
+export async function insertEvent(data) {
+  const db = await getDb();
+  const collection = db.collection(EVENT_COLLECTION);
+  const result = await collection.insertOne(data);
+  return result.insertedId.toString();
+}
+
+export async function findEvent(id) {
+  const db = await getDb();
+  const collection = db.collection(EVENT_COLLECTION);
+  let queryId;
+  try {
+    queryId = new ObjectId(id);
+  } catch (err) {
+    return null;
+  }
+  const ev = await collection.findOne({ _id: queryId });
+  return serializeEvent(ev);
+}
+
+export async function getEvents() {
+  const db = await getDb();
+  const collection = db.collection(EVENT_COLLECTION);
+  const events = await collection.find({}).toArray();
+  return events.map(serializeEvent);
+}
+
+export async function updateEvent(id, updates) {
+  const db = await getDb();
+  const collection = db.collection(EVENT_COLLECTION);
+  let queryId;
+  try {
+    queryId = new ObjectId(id);
+  } catch (err) {
+    return null;
+  }
+  await collection.updateOne({ _id: queryId }, { $set: updates });
+  const ev = await collection.findOne({ _id: queryId });
+  return serializeEvent(ev);
+}
+
+export async function deleteEvent(id) {
+  const db = await getDb();
+  const collection = db.collection(EVENT_COLLECTION);
+  let queryId;
+  try {
+    queryId = new ObjectId(id);
+  } catch (err) {
+    return false;
+  }
+  const res = await collection.deleteOne({ _id: queryId });
+  return res.deletedCount > 0;
 }

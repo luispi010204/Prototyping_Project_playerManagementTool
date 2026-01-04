@@ -1,9 +1,21 @@
 <script>
   import { goto } from "$app/navigation";
 
+  export let data;
+  const allPlayers = data?.players || [];
+  const initialEvents = data?.events || [];
   const now = new Date();
   let currentMonth = now.getMonth();
   let currentYear = now.getFullYear();
+  let selectedDate = null;
+  let selectedType = "";
+  let showModal = false;
+  let selectedEventId = null;
+  let selectedPlayers = [];
+  let saving = false;
+  let saveError = "";
+  let events = initialEvents;
+  let isSelectAll = false;
 
   $: monthDate = new Date(currentYear, currentMonth, 1);
   $: monthName = monthDate.toLocaleString("default", { month: "long" });
@@ -27,6 +39,15 @@
     return list;
   })();
 
+  $: if (
+    selectedDate &&
+    (selectedDate.getMonth() !== currentMonth || selectedDate.getFullYear() !== currentYear)
+  ) {
+    selectedDate = null;
+    selectedType = "";
+    showModal = false;
+  }
+
   function prevMonth() {
     if (currentMonth === 0) {
       currentMonth = 11;
@@ -42,6 +63,137 @@
       currentYear += 1;
     } else {
       currentMonth += 1;
+    }
+  }
+
+  function selectDay(day) {
+    selectedDate = new Date(currentYear, currentMonth, day);
+    selectedType = "";
+    selectedPlayers = [];
+    showModal = true;
+    selectedEventId = null;
+  }
+
+  function openEvent(ev) {
+    selectedEventId = ev._id;
+    selectedDate = new Date(ev.date);
+    selectedType = ev.type === "training" ? "Training" : "Game";
+    selectedPlayers = ev.participants || [];
+    isSelectAll = selectedPlayers.length === healthyPlayers.length && healthyPlayers.length > 0;
+    showModal = true;
+  }
+
+  function isSelected(item) {
+    return (
+      selectedDate &&
+      item.current &&
+      selectedDate.getDate() === item.day &&
+      selectedDate.getMonth() === currentMonth &&
+      selectedDate.getFullYear() === currentYear
+    );
+  }
+
+  function chooseType(type) {
+    if (!selectedDate) return;
+    selectedType = type;
+  }
+
+  function closeModal() {
+    showModal = false;
+    selectedDate = null;
+    selectedType = "";
+    selectedPlayers = [];
+    saving = false;
+    saveError = "";
+    selectedEventId = null;
+  }
+
+  $: healthyPlayers = allPlayers.filter((p) => !p.isInjured);
+
+  function togglePlayer(id) {
+    if (selectedPlayers.includes(id)) {
+      selectedPlayers = selectedPlayers.filter((pid) => pid !== id);
+    } else {
+      selectedPlayers = [...selectedPlayers, id];
+    }
+    isSelectAll = selectedPlayers.length === healthyPlayers.length && healthyPlayers.length > 0;
+  }
+
+  async function saveEvent() {
+    if (!selectedDate || !selectedType) {
+      saveError = "Select date and type";
+      return;
+    }
+    saveError = "";
+    saving = true;
+    try {
+      const payload = {
+        date: selectedDate.toISOString(),
+        type: selectedType.toLowerCase(),
+        participants: selectedPlayers,
+      };
+      const url = selectedEventId ? `/api/events/${selectedEventId}` : "/api/events";
+      const method = selectedEventId ? "PUT" : "POST";
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        saveError = err.error || "Could not save event";
+        return;
+      }
+      await res.json().catch(() => ({}));
+      window.location.reload();
+    } catch (err) {
+      saveError = "Unexpected error while saving";
+    } finally {
+      saving = false;
+    }
+  }
+
+  function eventsForDay(day) {
+    const dateKey = new Date(currentYear, currentMonth, day).toISOString().slice(0, 10);
+    return events.filter((ev) => (ev.date || "").startsWith(dateKey));
+  }
+
+  async function loadEvents() {
+    try {
+      const res = await fetch("/api/events");
+      if (!res.ok) return;
+      const list = await res.json();
+      events = Array.isArray(list) ? list : [];
+    } catch (err) {
+      // ignore refresh errors
+    }
+  }
+
+  function toggleSelectAll(event) {
+    isSelectAll = event.target.checked;
+    if (isSelectAll) {
+      selectedPlayers = healthyPlayers.map((p) => p._id);
+    } else {
+      selectedPlayers = [];
+    }
+  }
+
+  async function deleteEvent() {
+    if (!selectedEventId) return;
+    saving = true;
+    saveError = "";
+    try {
+      const res = await fetch(`/api/events/${selectedEventId}`, { method: "DELETE" });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        saveError = err.error || "Could not delete event";
+        return;
+      }
+      window.location.reload();
+    } catch (err) {
+      saveError = "Unexpected error while deleting";
+    } finally {
+      saving = false;
     }
   }
 </script>
@@ -69,13 +221,85 @@
     </div>
     <div class="grid">
       {#each days as item}
-        <div class={`cell ${item.current ? "" : "disabled"}`}>
-          {item.day}
+        <div
+          class={`cell ${item.current ? "active" : "disabled"} ${isSelected(item) ? "selected" : ""}`}
+          on:click={() => item.current && selectDay(item.day)}
+        >
+          <div class="day-number">{item.day}</div>
+          {#if item.current}
+            {#if eventsForDay(item.day).length > 0}
+              <div class="event-badges">
+                {#each eventsForDay(item.day) as ev}
+                  <button class={`badge ${ev.type}`} on:click|stopPropagation={() => openEvent(ev)}>
+                    {ev.type === "training" ? "Training" : "Game"}
+                  </button>
+                {/each}
+              </div>
+            {/if}
+          {/if}
         </div>
       {/each}
     </div>
+
   </div>
 </div>
+
+{#if showModal && selectedDate}
+  <div class="modal-backdrop" on:click={closeModal}>
+    <div class="modal" on:click|stopPropagation>
+      <div class="modal-header">
+        <div>Plan Event</div>
+        <button class="close-btn" on:click={closeModal}>×</button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="label">Date</div>
+          <div class="value">{selectedDate.toDateString()}</div>
+        </div>
+        <div class="row">
+          <div class="label">Event Type</div>
+          <div class="value buttons">
+            <button class={`type-btn ${selectedType === "Training" ? "active" : ""}`} on:click={() => chooseType("Training")}>Training</button>
+            <button class={`type-btn ${selectedType === "Game" ? "active" : ""}`} on:click={() => chooseType("Game")}>Game</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="label">Participants (Healthy Only)</div>
+          <div class="participants">
+            <label class="select-all">
+              <input type="checkbox" checked={isSelectAll} on:change={toggleSelectAll} />
+              <span>Select all healthy players</span>
+            </label>
+            {#if healthyPlayers.length === 0}
+              <div class="no-players">No healthy players available</div>
+            {:else}
+              {#each healthyPlayers as player}
+                <button
+                  class={`participant ${selectedPlayers.includes(player._id) ? "active" : ""}`}
+                  on:click={() => togglePlayer(player._id)}
+                >
+                  {player.name}
+                </button>
+              {/each}
+            {/if}
+          </div>
+        </div>
+        {#if saveError}
+          <div class="error-text">{saveError}</div>
+        {/if}
+        <div class="modal-actions">
+          {#if selectedEventId}
+            <button class="delete" on:click={deleteEvent} disabled={saving}>Delete</button>
+          {/if}
+          <button class="confirm" on:click={saveEvent} disabled={saving}>
+            {saving ? "Saving..." : "Save"}
+          </button>
+          <button class="cancel" on:click={closeModal}>Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{/if}
 
 <style>
   .page {
@@ -175,15 +399,221 @@
     color: #fff;
     display: flex;
     align-items: flex-start;
-    justify-content: flex-start;
+    justify-content: space-between;
     padding: 8px;
     box-sizing: border-box;
     font-weight: 700;
+    flex-direction: column;
+  }
+
+  .cell.active {
+    cursor: pointer;
+  }
+
+  .cell.selected {
+    border-color: #3b5bff;
+    box-shadow: 0 0 0 1px #3b5bff;
   }
 
   .cell.disabled {
     color: #666a7a;
     background: #13131b;
     border-color: #1a1b26;
+  }
+
+  .day-number {
+    font-weight: 800;
+  }
+
+  .event-badges {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: auto;
+    width: 100%;
+  }
+
+  .event-badges .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 6px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 800;
+    width: fit-content;
+  }
+
+  .event-badges .badge.training {
+    background: #4c234f;
+    color: #ffc4f0;
+  }
+
+  .event-badges .badge.game {
+    background: #1f3a2a;
+    color: #9af0b5;
+  }
+
+  .selection {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 6px;
+    color: #fff;
+  }
+
+  .selection-label {
+    font-weight: 700;
+  }
+
+  .type-buttons {
+    display: flex;
+    gap: 10px;
+  }
+
+  .type-btn {
+    background: #181824;
+    color: #fff;
+    border: 1px solid #1f2030;
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-weight: 700;
+  }
+
+  .type-btn.active {
+    border-color: #3b5bff;
+    color: #3b5bff;
+  }
+
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+  }
+
+  .modal {
+    background: #111119;
+    border: 1px solid #1f2030;
+    border-radius: 12px;
+    width: 380px;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+    color: #fff;
+    overflow: hidden;
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #1f2030;
+    font-weight: 800;
+  }
+
+  .close-btn {
+    background: transparent;
+    color: #fff;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  .modal-body {
+    padding: 14px 16px 16px;
+    display: grid;
+    gap: 12px;
+  }
+
+  .row {
+    display: grid;
+    gap: 6px;
+  }
+
+  .label {
+    color: #9ea0b3;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .value {
+    font-weight: 700;
+  }
+
+  .value.buttons {
+    display: flex;
+    gap: 10px;
+  }
+
+  .participants {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .select-all {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .participant {
+    background: #181824;
+    color: #fff;
+    border: 1px solid #1f2030;
+    border-radius: 8px;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-weight: 700;
+  }
+
+  .participant.active {
+    border-color: #3b5bff;
+    color: #3b5bff;
+  }
+
+  .no-players {
+    color: #8a8ea2;
+    font-weight: 600;
+  }
+
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  .modal-actions .cancel,
+  .modal-actions .confirm,
+  .modal-actions .delete {
+    background: #181824;
+    color: #fff;
+    border: 1px solid #1f2030;
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-weight: 700;
+  }
+
+  .modal-actions .confirm {
+    border-color: #3b5bff;
+    color: #3b5bff;
+  }
+
+  .modal-actions .delete {
+    border-color: #ff3a3a;
+    color: #ff8080;
+  }
+
+  .error-text {
+    color: #ff8080;
+    font-weight: 700;
   }
 </style>
