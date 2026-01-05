@@ -12,6 +12,8 @@
   let showModal = false;
   let selectedEventId = null;
   let selectedPlayers = [];
+  let selectedStartTime = "";
+  let selectedEndTime = "";
   let saving = false;
   let saveError = "";
   let events = initialEvents;
@@ -70,8 +72,11 @@
     selectedDate = new Date(currentYear, currentMonth, day);
     selectedType = "";
     selectedPlayers = [];
+    selectedStartTime = "";
+    selectedEndTime = "";
     showModal = true;
     selectedEventId = null;
+    isSelectAll = false;
   }
 
   function openEvent(ev) {
@@ -79,6 +84,8 @@
     selectedDate = new Date(ev.date);
     selectedType = ev.type === "training" ? "Training" : "Game";
     selectedPlayers = ev.participants || [];
+    selectedStartTime = ev.startTime || "";
+    selectedEndTime = ev.endTime || "";
     isSelectAll = selectedPlayers.length === healthyPlayers.length && healthyPlayers.length > 0;
     showModal = true;
   }
@@ -98,14 +105,72 @@
     selectedType = type;
   }
 
+  const timeSlots = (() => {
+    const slots = [];
+    let hour = 5;
+    let minute = 0;
+    while (hour < 22 || (hour === 22 && minute === 0)) {
+      const h = hour.toString().padStart(2, "0");
+      const m = minute.toString().padStart(2, "0");
+      slots.push(`${h}:${m}`);
+      minute += 30;
+      if (minute >= 60) {
+        minute = 0;
+        hour += 1;
+      }
+    }
+    return slots;
+  })();
+
+  function toMinutes(t) {
+    if (typeof t !== "string") return null;
+    const [h, m] = t.split(":").map(Number);
+    if (!Number.isFinite(h) || !Number.isFinite(m)) return null;
+    return h * 60 + m;
+  }
+
+  $: dayEvents = selectedDate ? eventsForDay(selectedDate.getDate()) : [];
+
+  function overlaps(start, end, ev) {
+    if (!ev.startTime || !ev.endTime) return false;
+    const evStart = toMinutes(ev.startTime);
+    const evEnd = toMinutes(ev.endTime);
+    if (evStart === null || evEnd === null) return false;
+    return start < evEnd && end > evStart;
+  }
+
+  function startDisabled(slot) {
+    const start = toMinutes(slot);
+    if (start === null) return false;
+    const end = start + 30;
+    return dayEvents.some((ev) => ev._id !== selectedEventId && overlaps(start, end, ev));
+  }
+
+  function endOptions() {
+    return timeSlots;
+  }
+
+  function endDisabled(opt) {
+    if (!selectedStartTime) return true;
+    const start = toMinutes(selectedStartTime);
+    const end = toMinutes(opt);
+    if (start === null || end === null) return true;
+    if (end <= start) return true;
+    if (startDisabled(opt)) return true;
+    return dayEvents.some((ev) => ev._id !== selectedEventId && overlaps(start, end, ev));
+  }
+
   function closeModal() {
     showModal = false;
     selectedDate = null;
     selectedType = "";
     selectedPlayers = [];
+    selectedStartTime = "";
+    selectedEndTime = "";
     saving = false;
     saveError = "";
     selectedEventId = null;
+    isSelectAll = false;
   }
 
   $: healthyPlayers = allPlayers.filter((p) => !p.isInjured);
@@ -124,6 +189,14 @@
       saveError = "Select date and type";
       return;
     }
+    if (!selectedStartTime || !selectedEndTime) {
+      saveError = "Select start and end time";
+      return;
+    }
+    if (toMinutes(selectedEndTime) <= toMinutes(selectedStartTime)) {
+      saveError = "End time must be after start time";
+      return;
+    }
     saveError = "";
     saving = true;
     try {
@@ -131,6 +204,8 @@
         date: selectedDate.toISOString(),
         type: selectedType.toLowerCase(),
         participants: selectedPlayers,
+        startTime: selectedStartTime,
+        endTime: selectedEndTime,
       };
       const url = selectedEventId ? `/api/events/${selectedEventId}` : "/api/events";
       const method = selectedEventId ? "PUT" : "POST";
@@ -155,7 +230,13 @@
 
   function eventsForDay(day) {
     const dateKey = new Date(currentYear, currentMonth, day).toISOString().slice(0, 10);
-    return events.filter((ev) => (ev.date || "").startsWith(dateKey));
+    return events
+      .filter((ev) => (ev.date || "").startsWith(dateKey))
+      .sort((a, b) => {
+        const aStart = toMinutes(a.startTime || "00:00") ?? 0;
+        const bStart = toMinutes(b.startTime || "00:00") ?? 0;
+        return aStart - bStart;
+      });
   }
 
   async function loadEvents() {
@@ -231,7 +312,7 @@
               <div class="event-badges">
                 {#each eventsForDay(item.day) as ev}
                   <button class={`badge ${ev.type}`} on:click|stopPropagation={() => openEvent(ev)}>
-                    {ev.type === "training" ? "Training" : "Game"}
+                    {ev.type === "training" ? "Training" : "Game"}{ev.startTime && ev.endTime ? ` · ${ev.startTime}–${ev.endTime}` : ""}
                   </button>
                 {/each}
               </div>
@@ -261,6 +342,37 @@
           <div class="value buttons">
             <button class={`type-btn ${selectedType === "Training" ? "active" : ""}`} on:click={() => chooseType("Training")}>Training</button>
             <button class={`type-btn ${selectedType === "Game" ? "active" : ""}`} on:click={() => chooseType("Game")}>Game</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="label">Start Time</div>
+          <div class="value">
+            <select bind:value={selectedStartTime}>
+              <option value="">Select start</option>
+              {#each timeSlots as slot}
+                <option value={slot} disabled={startDisabled(slot)}>{slot}</option>
+              {/each}
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="label">End Time</div>
+          <div class="value">
+            <select bind:value={selectedEndTime} disabled={!selectedStartTime}>
+  <option value="">Select end</option>
+  {#each timeSlots as slot}
+    <option
+      value={slot}
+      disabled={
+        !selectedStartTime ||
+        toMinutes(slot) <= toMinutes(selectedStartTime) ||
+        startDisabled(slot)
+      }
+    >
+      {slot}
+    </option>
+  {/each}
+</select>
           </div>
         </div>
         <div class="row">
@@ -543,6 +655,15 @@
 
   .value {
     font-weight: 700;
+  }
+
+  select {
+    width: 100%;
+    background: #181824;
+    color: #fff;
+    border: 1px solid #1f2030;
+    border-radius: 8px;
+    padding: 8px;
   }
 
   .value.buttons {
