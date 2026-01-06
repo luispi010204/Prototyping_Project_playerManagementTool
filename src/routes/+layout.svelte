@@ -171,7 +171,7 @@
         on:click={() => goto("/")}
       >
         <span class="left-bar"></span>
-        TEAM OVERVIEW
+        TEAM ROSTER
       </button>
 
       <div class="player-list">

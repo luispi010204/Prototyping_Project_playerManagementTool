@@ -5,6 +5,8 @@
 
   let player = data.player;
   const players = data.players || [];
+  const events = data.events || [];
+  let liveEvents = events;
   let injuryFormOpen = false;
   let actionError = "";
   let loadingAction = false;
@@ -30,6 +32,55 @@
 
   $: player = overridePlayer || data.player;
   $: status = player && player.isInjured ? "out - injured" : "active";
+  $: now = new Date();
+
+  function toMinutes(time) {
+    if (typeof time !== "string") return null;
+    const [h, m] = time.split(":").map(Number);
+    if (!Number.isFinite(h) || !Number.isFinite(m)) return null;
+    return h * 60 + m;
+  }
+
+  function startDateTime(ev) {
+    const base = new Date(ev.date);
+    base.setDate(base.getDate());
+    const [h, m] = (ev.startTime || "00:00").split(":").map(Number);
+    if (Number.isFinite(h) && Number.isFinite(m)) {
+      base.setHours(h, m, 0, 0);
+    }
+    return base;
+  }
+
+  $: upcomingEvents = (() => {
+    if (!player || !liveEvents) return [];
+    const pid = player._id;
+    return (liveEvents || [])
+      .filter((ev) => Array.isArray(ev.participants) && ev.participants.includes(pid))
+      .filter((ev) => {
+        const dt = startDateTime(ev);
+        return dt > now;
+      })
+      .sort((a, b) => {
+        const dateA = startDateTime(a);
+        const dateB = startDateTime(b);
+        if (dateA.getTime() !== dateB.getTime()) return dateA - dateB;
+        return (toMinutes(a.startTime || "00:00") ?? 0) - (toMinutes(b.startTime || "00:00") ?? 0);
+      });
+  })();
+
+  import { onMount } from "svelte";
+  onMount(async () => {
+    try {
+      const res = await fetch("/api/events");
+      if (!res.ok) return;
+      const list = await res.json();
+      if (Array.isArray(list)) {
+        liveEvents = list;
+      }
+    } catch (err) {
+      // ignore fetch errors
+    }
+  });
 
   $: if (player && player._id !== lastPlayerId) {
     lastPlayerId = player._id;
@@ -365,6 +416,25 @@
     {/if}
   </div>
 </div>
+
+{#if upcomingEvents.length > 0}
+  <div class="card events-card">
+    <div class="events-head">Upcoming Events</div>
+    <div class="events-list">
+      {#each upcomingEvents as ev}
+        <div class="event-row">
+          <div class={`event-type ${ev.type === "training" ? "training" : "game"}`}>
+            {ev.type === "training" ? "Training" : "Game"}
+          </div>
+          <div class="event-date">{startDateTime(ev).toISOString().slice(0, 10)}</div>
+          <div class="event-time">
+            {ev.startTime ? ev.startTime : "?"}–{ev.endTime ? ev.endTime : "?"}
+          </div>
+        </div>
+      {/each}
+    </div>
+  </div>
+{/if}
 
 {#if injuryFormOpen}
   <div class="modal-backdrop" on:click={() => (injuryFormOpen = false)}>
@@ -867,6 +937,52 @@
 
   .wide {
     width: 100%;
+  }
+
+  .events-card {
+    margin-top: 12px;
+  }
+
+  .events-head {
+    color: #fff;
+    font-weight: 800;
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+
+  .events-list {
+    display: grid;
+    gap: 8px;
+  }
+
+  .event-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: #1c1d2a;
+    border: 1px solid #2c2f45;
+    color: #e1e1e6;
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .event-type.training {
+    color: #ffc4f0;
+  }
+
+  .event-type.game {
+    color: #9af0b5;
+  }
+
+  .event-date {
+    color: #b5b8cc;
+  }
+
+  .event-time {
+    text-align: right;
+    color: #dfe1f1;
   }
 
   @media (max-width: 1000px) {
