@@ -174,6 +174,10 @@
   }
 
   $: healthyPlayers = allPlayers.filter((p) => !p.isInjured);
+  $: selectedParticipantPlayers = (selectedPlayers || [])
+    .map((id) => allPlayers.find((p) => p._id === id))
+    .filter(Boolean);
+  $: injuredSelected = selectedParticipantPlayers.filter((p) => p.isInjured);
 
   function togglePlayer(id) {
     if (selectedPlayers.includes(id)) {
@@ -396,6 +400,16 @@
             {/if}
           </div>
         </div>
+        {#if injuredSelected.length > 0}
+          <div class="row">
+            <div class="label">Unavailable (Injured)</div>
+            <div class="injured-list">
+              {#each injuredSelected as player}
+                <div class="injured-name">{player.name}</div>
+              {/each}
+            </div>
+          </div>
+        {/if}
         {#if saveError}
           <div class="error-text">{saveError}</div>
         {/if}
@@ -703,6 +717,16 @@
   .no-players {
     color: #8a8ea2;
     font-weight: 600;
+  }
+
+  .injured-list {
+    display: grid;
+    gap: 6px;
+  }
+
+  .injured-name {
+    color: #ff8a8a;
+    font-weight: 700;
   }
 
   .modal-actions {

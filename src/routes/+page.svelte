@@ -3,6 +3,10 @@
 
   export let data;
   const players = data.players || [];
+  let sortKey = "player";
+  let sortDirection = "asc";
+  let showHealthy = true;
+  let showInjured = true;
 
   function formatHw(player) {
     return `${player.height} cm / ${player.weight} kg`;
@@ -17,35 +21,167 @@
   function openPlayer(id) {
     goto(`/players/${id}`);
   }
+
+  function toggleSort(key) {
+    if (sortKey === key) {
+      sortDirection = sortDirection === "asc" ? "desc" : "asc";
+    } else {
+      sortKey = key;
+      sortDirection = "asc";
+    }
+  }
+
+  $: filteredPlayers = players.filter((p) => {
+    if (showHealthy && showInjured) return true;
+    if (showHealthy && !showInjured) return !p.isInjured;
+    if (!showHealthy && showInjured) return p.isInjured;
+    return false;
+  });
+
+  $: filteredPlayers = players.filter((p) => {
+    if (showHealthy && showInjured) return true;
+    if (showHealthy && !showInjured) return !p.isInjured;
+    if (!showHealthy && showInjured) return p.isInjured;
+    return false;
+  });
+
+  $: sortedPlayers = (() => {
+    if (sortKey === "player") {
+      return [...filteredPlayers].sort((a, b) => {
+        const aName = displayName(a);
+        const bName = displayName(b);
+        const cmp = aName.localeCompare(bName);
+        return sortDirection === "asc" ? cmp : -cmp;
+      });
+    }
+    if (sortKey === "position") {
+      return [...filteredPlayers].sort((a, b) => {
+        const aPos = a.position || "";
+        const bPos = b.position || "";
+        const cmp = aPos.localeCompare(bPos);
+        return sortDirection === "asc" ? cmp : -cmp;
+      });
+    }
+    if (sortKey === "age") {
+      return [...filteredPlayers].sort((a, b) => {
+        const aVal = Number(a.age) || 0;
+        const bVal = Number(b.age) || 0;
+        const cmp = aVal - bVal;
+        return sortDirection === "asc" ? cmp : -cmp;
+      });
+    }
+    if (sortKey === "hw") {
+      return [...filteredPlayers].sort((a, b) => {
+        const aVal = Number(a.height) || 0;
+        const bVal = Number(b.height) || 0;
+        const cmp = aVal - bVal;
+        return sortDirection === "asc" ? cmp : -cmp;
+      });
+    }
+    if (sortKey === "joinedYear") {
+      return [...filteredPlayers].sort((a, b) => {
+        const aVal = Number(a.joinedYear) || 0;
+        const bVal = Number(b.joinedYear) || 0;
+        const cmp = aVal - bVal;
+        return sortDirection === "asc" ? cmp : -cmp;
+      });
+    }
+    return filteredPlayers;
+  })();
 </script>
 
 <div class="page">
   <div class="tabs">
     <button class="tab active">Team Roster</button>
-    <button class="tab" on:click={() => goto("/planning")}>Trainings & Games Planning</button>
+    <button class="tab" on:click={() => goto("/planning")}
+      >Trainings & Games Planning</button
+    >
   </div>
 
   <div class="table">
     <div class="table-head">
-      <div>PLAYER</div>
-      <div>POSITION</div>
-      <div>AGE</div>
-      <div>HEIGHT / WEIGHT</div>
-      <div>MEMBER SINCE</div>
-      <div>STATUS</div>
+      <button class="head-cell" on:click={() => toggleSort("player")}>
+        PLAYER
+        <span class="sort-arrow {sortKey === 'player' ? 'active' : 'inactive'}">
+          {sortKey === "player" ? (sortDirection === "asc" ? "▲" : "▼") : "▲"}
+        </span>
+      </button>
+
+      <button class="head-cell" on:click={() => toggleSort("position")}>
+        POSITION
+        <span
+          class="sort-arrow {sortKey === 'position' ? 'active' : 'inactive'}"
+        >
+          {sortKey === "position" ? (sortDirection === "asc" ? "▲" : "▼") : "▲"}
+        </span>
+      </button>
+
+      <button class="head-cell" on:click={() => toggleSort("age")}>
+        AGE
+
+        <span class="sort-arrow {sortKey === 'age' ? 'active' : 'inactive'}">
+          {sortKey === "age" ? (sortDirection === "asc" ? "▲" : "▼") : "▲"}
+        </span>
+      </button>
+
+      <button class="head-cell" on:click={() => toggleSort("hw")}>
+        HEIGHT / WEIGHT
+        <span class="sort-arrow {sortKey === 'hw' ? 'active' : 'inactive'}">
+          {sortKey === "hw" ? (sortDirection === "asc" ? "▲" : "▼") : "▲"}
+        </span>
+      </button>
+
+      <button class="head-cell" on:click={() => toggleSort("joinedYear")}>
+        MEMBER SINCE
+        <span
+          class="sort-arrow {sortKey === 'joinedYear' ? 'active' : 'inactive'}"
+        >
+          {sortKey === "joinedYear"
+            ? sortDirection === "asc"
+              ? "▲"
+              : "▼"
+            : "▲"}
+        </span>
+      </button>
+
+      <div class="head-cell">
+          STATUS
+        <div
+          style="display:flex; gap:8px; margin-top:4px; font-size:12px;"
+          on:click|stopPropagation>
+          <label>
+            <input
+              type="checkbox"
+              checked={showHealthy}
+              on:change={() => (showHealthy = !showHealthy)}
+            />
+            Healthy
+          </label>
+
+          <label>
+            <input
+              type="checkbox"
+              checked={showInjured}
+              on:change={() => (showInjured = !showInjured)}
+            />
+            Injured
+          </label>
+        </div>
+      </div>
     </div>
 
-    {#if players.length === 0}
+    {#if sortedPlayers.length === 0}
       <div class="empty-row">No players available</div>
     {:else}
-      {#each players as player, index}
+      {#each sortedPlayers as player, index}
         <div
           class="table-row"
           class:injured={player.isInjured}
           role="link"
           tabindex="0"
           on:click={() => openPlayer(player._id)}
-          on:keydown={(e) => (e.key === "Enter" || e.key === " ") && openPlayer(player._id)}
+          on:keydown={(e) =>
+            (e.key === "Enter" || e.key === " ") && openPlayer(player._id)}
         >
           <div class="cell player-cell">
             <div class="name">{displayName(player)}</div>
@@ -131,6 +267,36 @@
     text-transform: uppercase;
   }
 
+  .head-cell {
+    background: transparent;
+    border: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .status-header-title {
+  font-weight: inherit;
+  text-transform: uppercase;
+}
+
+.status-filters {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.status-filters label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
   .table-row {
     background: #17171b;
     border-top: 1px solid #1f2030;
@@ -198,8 +364,8 @@
     .table-row {
       grid-template-columns: 1.8fr 0.9fr 0.9fr 1.3fr;
     }
-    .table-head div:nth-child(n+5),
-    .table-row .cell:nth-child(n+5) {
+    .table-head div:nth-child(n + 5),
+    .table-row .cell:nth-child(n + 5) {
       display: none;
     }
   }
