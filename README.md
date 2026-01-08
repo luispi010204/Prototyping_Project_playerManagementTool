@@ -248,7 +248,8 @@ URL: https://cactus-wick-43502840.figma.site
 
   Die Workflows sind bewusst einfach gehalten und ermöglichen es, die zentralen Aufgaben ohne unnötige Zwischenschritte durchzuführen. Der Prototyp deckt damit den vorgesehenen Mindestumfang vollständig ab und dient als Grundlage für die anschliessende Evaluation.  
 - **Deployment:** https://prototypingplayermanagementtool.netlify.app
-(für Login) User: testuser, password: 12345678
+
+  (für Login) User: testuser, password: 12345678
 
 #### 4.4.1. Entwurf (Design)
 Die Gestaltung des Prototyps orientiert sich an den zentralen Aufgaben eines Coaches und verfolgt das Ziel, relevante Informationen schnell erfassbar zu machen. Die Benutzeroberfläche ist klar strukturiert und reduziert gehalten, um die Interaktion mit dem Produkt auch unter Zeitdruck zu erleichtern.
