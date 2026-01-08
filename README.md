@@ -44,7 +44,7 @@ Wem nützt die Lösung, wer ist beteiligt oder betroffen?
 
 - **Weitere Stakeholder:** 
  
-  - **Assistant Coaches:** 
+   - **Assistant Coaches:** 
     profitieren von einem übersichtlichen Zugriff auf alle Spielerinformationen, um Trainings und Spiele besser planen zu können.  
   - **Spieler:** auch wenn sie das Tool nicht aktiv bedienen, betrifft sie die Verwaltung ihrer Verfügbarkeit und Verletzungen direkt, insbesondere im Hinblick auf Kommunikation, Wiedereinstiegszeit und Belastungsmanagement.
 - **Annahmen:** 
@@ -98,43 +98,57 @@ Ziel dieser Phase war es, den Problemraum klar zu verstehen, die relevanten Nutz
  
   Zur Erarbeitung eines fundierten Zielgruppenverständnisses wurden zentrale Nutzergruppen identifiziert und in Form von Proto-Personas konkretisiert. Der Fokus liegt auf Coaches kleiner Sportteams, die als primäre Nutzende für die operative Planung von Trainings und Spielen verantwortlich sind und einen schnellen Überblick über den aktuellen Kaderstatus benötigen.Ergänzend wurde die Perspektive eines Clubpräsidenten als sekundärer Stakeholder berücksichtigt, dessen Interesse vor allem in der strukturierten und verlässlichen Verwaltung von Spielerinformationen liegt. Die Analyse dieser Rollen bildete die Grundlage für die Priorisierung der Anforderungen und die konsequente Ausrichtung des Prototyps auf die Bedürfnisse der primären Zielgruppe.
 
-Folgende **Problemraumanalyse** wurde erarbeitet:
-| Nutzergruppe | Bedürfnisse | Kontext / Herausforderungen | How Might We |
-|--------------|------------|-----------------------------|--------------|
-| Club-Manager | Überblick über den eigenen Kader und organisatorische Sicherheit | Entscheidungen zur Teamzusammenstellung sind schwierig, da es keine zentrale Übersicht über Spielerstatus und Verfügbarkeit gibt | Wie könnten wir das Rostermanagement vereinfachen, um fundierte Entscheidungen trotz Verletzungen treffen zu können? |
-| Coaches / Assistant Coaches | Planungssicherheit für Trainings und Spiele; individueller Umgang mit Spielern | Es ist oft unklar, welche Spieler aktuell einsatzbereit sind, insbesondere bei kurzfristigen Verletzungen | Wie könnten wir die Verfügbarkeit der Spieler transparent und schnell erfassbar machen? |
-| Spieler | Gesund bleiben und möglichst schnell wieder einsatzfähig sein | Verletzungen sind mental belastend und erschweren die Rückkehr in den Spielbetrieb | Wie könnten wir Spieler indirekt besser im Umgang mit Verletzungen unterstützen? |
+  Folgende **Problemraumanalyse** wurde erarbeitet:
+  | Nutzergruppe | Bedürfnisse | Kontext / Herausforderungen | How Might We |
+  |--------------|------------|-----------------------------|--------------|
+  | Club-Manager | Überblick über den eigenen Kader und organisatorische Sicherheit | Entscheidungen zur Teamzusammenstellung sind schwierig, da es keine zentrale Übersicht über Spielerstatus und Verfügbarkeit gibt | Wie könnten wir das Rostermanagement vereinfachen, um fundierte Entscheidungen trotz Verletzungen treffen zu können? |
+  | Coaches / Assistant Coaches | Planungssicherheit für Trainings und Spiele; individueller Umgang mit Spielern | Es ist oft unklar, welche Spieler aktuell einsatzbereit sind, insbesondere bei kurzfristigen Verletzungen | Wie könnten wir die Verfügbarkeit der Spieler transparent und schnell erfassbar machen? |
+  | Spieler | Gesund bleiben und möglichst schnell wieder einsatzfähig sein | Verletzungen sind mental belastend und erschweren die Rückkehr in den Spielbetrieb | Wie könnten wir Spieler indirekt besser im Umgang mit Verletzungen unterstützen? |
 
-Zur weiteren Konkretisierung der identifizierten Zielgruppen wurden **Proto-Personas** erstellt. Diese repräsentieren typische Vertreter der relevanten Nutzerrollen und dienen als Referenz für Design- und Entscheidungsprozesse im weiteren Projektverlauf.
+  Zur weiteren Konkretisierung der identifizierten Zielgruppen wurden **Proto-Personas** erstellt. Diese repräsentieren typische Vertreter der relevanten Nutzerrollen und dienen als Referenz für Design- und Entscheidungsprozesse im weiteren Projektverlauf.
 
-| Kategorie | Beschreibung |
-|----------|--------------|
-| Name | Oliver Bäcker |
-| Rolle | Coach |
-| Alter | 40 Jahre |
-| Hintergrund | Ehemaliger Profi-Basketballspieler mit 10-jähriger Karriere |
-| Eigenschaften | Instruktiv, erfahrungsbasiert, entscheidungsfreudig |
-| Ziele | Schneller Überblick über die Verfügbarkeit der Spieler |
-| Aufgaben | Planung von Trainings, Organisation des Spielbetriebs, Erstellung von Spielzügen |
-| Bedürfnisse | Klare, zentrale Übersicht über Spielerstatus und Verletzungen |
-| Frustpunkte | Keine zentrale Ablage von Spielerinformationen; hoher Planungsaufwand bei kurzfristigen Ausfällen |
+  | Kategorie | Beschreibung |
+  |----------|--------------|
+  | Name | Oliver Bäcker |
+  | Rolle | Coach |
+  | Alter | 40 Jahre |
+  | Hintergrund | Ehemaliger Profi-Basketballspieler mit 10-jähriger Karriere |
+  | Eigenschaften | Instruktiv, erfahrungsbasiert, entscheidungsfreudig |
+  | Ziele | Schneller Überblick über die Verfügbarkeit der Spieler |
+  | Aufgaben | Planung von Trainings, Organisation des Spielbetriebs, Erstellung von Spielzügen |
+  | Bedürfnisse | Klare, zentrale Übersicht über Spielerstatus und Verletzungen |
+  | Frustpunkte | Keine zentrale Ablage von Spielerinformationen; hoher Planungsaufwand bei kurzfristigen Ausfällen |
 
 
-| Kategorie | Beschreibung |
-|----------|--------------|
-| Name | Jan Heimer |
-| Rolle | Präsident des Clubs |
-| Alter | 42 Jahre |
-| Hintergrund | Ehemaliger Profi-Basketballspieler mit 8-jähriger Karriere |
-| Eigenschaften | Strategisch denkend, langfristig orientiert |
-| Ziele | Überblick über den Kader und organisatorische Stabilität |
-| Aufgaben | Strategische Führung des Clubs, Ressourcenplanung |
-| Bedürfnisse | Verlässliche und strukturierte Spielerinformationen |
-| Frustpunkte | Fehlende Transparenz über den aktuellen Kaderstatus |
+  | Kategorie | Beschreibung |
+  |----------|--------------|
+  | Name | Jan Heimer |
+  | Rolle | Präsident des Clubs |
+  | Alter | 42 Jahre |
+  | Hintergrund | Ehemaliger Profi-Basketballspieler mit 8-jähriger Karriere |
+  | Eigenschaften | Strategisch denkend, langfristig orientiert |
+  | Ziele | Überblick über den Kader und organisatorische Stabilität |
+  | Aufgaben | Strategische Führung des Clubs, Ressourcenplanung |
+  | Bedürfnisse | Verlässliche und strukturierte Spielerinformationen |
+  | Frustpunkte | Fehlende Transparenz über den aktuellen Kaderstatus |
 
-Der Coach stellt die primäre Persona des Projekts dar, da er das Tool im operativen Alltag aktiv nutzt und unmittelbar von einer klaren Übersicht über Spielerstatus und Verfügbarkeit abhängig ist. Entsprechend wurden die zentralen Workflows und Interaktionen des Prototyps konsequent auf seine Bedürfnisse ausgerichtet.
+  Der Coach stellt die primäre Persona des Projekts dar, da er das Tool im operativen Alltag aktiv nutzt und unmittelbar von einer klaren Übersicht über Spielerstatus und Verfügbarkeit abhängig ist. Entsprechend wurden die zentralen Workflows und Interaktionen des Prototyps konsequent auf seine Bedürfnisse ausgerichtet.
 
-Der Clubpräsident wurde als sekundäre Persona berücksichtigt. Seine Perspektive dient vor allem dazu, organisatorische und strategische Anforderungen zu verstehen, steht jedoch nicht im Fokus der Interaktion mit dem Prototypen. Obwohl der Clubpräsident nicht zur primären Nutzergruppe gehört, hat er als wichtiger Stakeholder einen grossen Einfluss auf die Umsetzung des Projekts.
+  Der Clubpräsident wurde als sekundäre Persona berücksichtigt. Seine Perspektive dient vor allem dazu, organisatorische und strategische Anforderungen zu verstehen, steht jedoch nicht im Fokus der Interaktion mit dem Prototypen. Obwohl der Clubpräsident nicht zur primären Nutzergruppe gehört, hat er als wichtiger Stakeholder einen grossen Einfluss auf die Umsetzung des Projekts.
+
+  **User Journey Map:**
+
+  | Phase | 1. Einstieg & Übersicht | 2. Spieler verwalten | 3. Verletzung erfassen | 4. Rückkehr & Abschluss |
+  |------|------------------------|----------------------|------------------------|-------------------------|
+  | Ziel | Überblick über den aktuellen Kader erhalten | Spieler korrekt erfassen und verwalten | Verletzung eines Spielers dokumentieren | Spielerstatus aktualisieren und Kader bereinigen |
+  | Aktionen | Öffnet die Teamübersicht | Fügt neuen Spieler hinzu oder bearbeitet bestehende Daten | Erfasst eine neue Verletzung im Spielerprofil | Markiert Spieler als genesen oder löscht ihn aus dem Team |
+  | Touchpoints | Teamübersicht, Spielernavigation | Spielerformular, Spielerprofil | Formular "Report New Injury", Spielerprofil | Spielerprofil, Teamübersicht |
+  | Emotion | Neutral, orientierend | Fokus, leicht konzentriert | Besorgt, angespannt | Erleichtert, abgeschlossen |
+  | Risiko | Informationen sind unklar oder unvollständig | Eingabe wirkt zu aufwendig oder verwirrend | Verletzung wird falsch oder unvollständig erfasst | Statusänderung ist nicht eindeutig |
+  | Mitigation | Klare Statusanzeige und übersichtliche Darstellung | Schlanke Formulare und konsistente Struktur | Fokussiertes Formular und direkte visuelle Rückmeldung | Deutliche Statusanzeige und klare Aktionen |
+
+
+  Die User Journey Map veranschaulicht den typischen Ablauf eines Teammanagers im Umgang mit dem Tool und diente als Grundlage für die Priorisierung der zentralen Workflows.
 
 - **Wesentliche Erkenntnisse:** 
   - Es besteht ein hoher Bedarf an einer zentralen und übersichtlichen Verwaltung von Spielerinformationen.
@@ -203,11 +217,11 @@ URL: https://cactus-wick-43502840.figma.site
 
   ![FigmaPlayerCardScreen](static/docs/sketches/FigmaPlayerCardScreen.PNG)
 
-  Das Spielerprofil zeigt die Detailansicht eines ausgewählten Spielers mit den wichtigsten Stammdaten (z. B. Position, Alter, Mitglied seit) sowie einer klaren Statusdarstellung. Wenn keine Verletzungen erfasst sind, zeigt der Injury-Bereich einen neutralen Zustand („no injury records“) und bietet einen eindeutigen Call-to-Action zum Erfassen einer neuen Verletzung. Dadurch bleibt der Screen übersichtlich und unterstützt den häufigen Einstieg in den Verletzungs-Workflow.
+  Das Spielerprofil zeigt die Detailansicht eines ausgewählten Spielers mit den wichtigsten Stammdaten (z. B. Position, Alter, Mitglied seit) sowie einer klaren Statusdarstellung. Wenn keine Verletzungen erfasst sind, zeigt der Injury-Bereich einen neutralen Zustand (no injury records) und bietet einen eindeutigen Call-to-Action zum Erfassen einer neuen Verletzung. Dadurch bleibt der Screen übersichtlich und unterstützt den häufigen Einstieg in den Verletzungs-Workflow.
 
   ![FigmaAddnewPlayerScreen](static/docs/sketches/FigmaAddnewPlayerScreen.PNG)
 
-  Über dieses Formular können neue Spieler in den Kader aufgenommen werden. Erfasst werden grundlegende Informationen wie Name, Position, Alter und Mitgliedschaftsjahr; optional kann zusätzlich eine Foto-URL hinterlegt werden. Die Eingabe ist bewusst schlank gehalten, damit der Workflow „Spieler hinzufügen“ schnell und ohne unnötige Hürden durchgeführt werden kann.
+  Über dieses Formular können neue Spieler in den Kader aufgenommen werden. Erfasst werden grundlegende Informationen wie Name, Position, Alter und Mitgliedschaftsjahr; optional kann zusätzlich eine Foto-URL hinterlegt werden. Die Eingabe ist bewusst schlank gehalten, damit der Workflow "Spieler hinzufügen" schnell und ohne unnötige Hürden durchgeführt werden kann.
 
   ![FigmaReportNewInjuryScreen](static/docs/sketches/FigmaReportNewInjuryScreen.PNG)
 
@@ -215,7 +229,7 @@ URL: https://cactus-wick-43502840.figma.site
 
   ![FigmaPlayerCardAfterInjury](static/docs/sketches/FigmaPlayerCardAfterInjury.PNG)
 
-  Dieses Mockup zeigt das Spielerprofil im Zustand „verletzt“. Die letzte bzw. relevante Verletzung wird im Injury-Bereich prominent dargestellt (inkl. Datum, Beschreibung und erwarteter Ausfallzeit), wodurch der Gesundheitsstatus ohne weitere Navigation erkennbar ist. Zusätzlich ermöglichen zwei klare Aktionen den direkten Statuswechsel („Mark as Recovered“) sowie das Erfassen weiterer Verletzungen („Report New Injury“).
+  Dieses Mockup zeigt das Spielerprofil im Zustand "verletzt". Die letzte bzw. relevante Verletzung wird im Injury-Bereich prominent dargestellt (inkl. Datum, Beschreibung und erwarteter Ausfallzeit), wodurch der Gesundheitsstatus ohne weitere Navigation erkennbar ist. Zusätzlich ermöglichen zwei klare Aktionen den direkten Statuswechsel ("Mark as Recovered") sowie das Erfassen weiterer Verletzungen ("Report New Injury").
 
 ### 4.4 Prototype
 
@@ -288,63 +302,242 @@ Visuelle Rückmeldungen wie Statusanzeigen unterstützen die Nutzenden bei der E
 
 #### 4.4.2. Umsetzung (Technik)
 Fasst die technische Realisierung zusammen.
-- **Technologie‑Stack:** _[SvelteKit, Bibliotheken falls genutzt]_
-- **Tooling:** _[IDE/Erweiterungen, lokale/Cloud‑Tools; den Einsatz von KI beschreiben Sie im Kapitel **KI-Deklaration**]_  
-- **Struktur & Komponenten:** _[Seiten, Routen, State/Stores, wichtige Komponenten]_
-- **Daten & Schnittstellen [Optional]:** _[Datenquellen, API‑Entwürfe, Modelle]_
-- **Besondere Entscheidungen:** _[z. B. Trade‑offs, Vereinfachungen]_  
+- **Technologie‑Stack:** 
+
+  Der entwickelte Prototyp wurde mit SvelteKit umgesetzt. Diese Technologie ermöglicht eine komponentenbasierte Struktur sowie eine klare Trennung von Darstellung und Logik, was die Entwicklung eines interaktiven Prototyps erleichtert.
+
+  Für die Persistenz der Daten wird eine MongoDB-Datenbank eingesetzt. Spieler- und Verletzungsdaten werden dort gespeichert, sodass Änderungen dauerhaft erhalten bleiben und bei erneutem Aufruf des Prototyps konsistent verfügbar sind.
+
+  Die Kombination aus SvelteKit für das Frontend und MongoDB für die Datenspeicherung bildet eine einfache und robuste Grundlage, um die definierten Kernworkflows des Projekts zuverlässig abzubilden.
+- **Tooling:** 
+
+  Die Entwicklung des Prototyps erfolgte mit Visual Studio Code als Entwicklungsumgebung. Zur Versionsverwaltung wurde Git in Kombination mit GitHub verwendet, um Änderungen nachvollziehbar zu dokumentieren und den Projektstand zu sichern.
+
+- **Struktur & Komponenten:** 
+
+  Der Prototyp ist in klar definierte Seiten und Routen unterteilt, die den zentralen Workflows des Produkts entsprechen. Dazu gehören die Teamübersicht als Einstiegspunkt, die Spielerprofilseite zur Detailansicht einzelner Spieler sowie separate Seiten für das Hinzufügen neuer Spieler und das Erfassen von Verletzungen.
+
+Die Navigation zwischen diesen Seiten erfolgt so, dass der aktuell ausgewählte Spieler als Kontext erhalten bleibt. Dadurch können Nutzende zwischen Übersicht und Detailansicht wechseln, ohne den Bezug zum gewählten Spieler zu verlieren.
+
+Zustände wie der aktuell ausgewählte Spieler sowie dessen Verletzungsstatus werden zentral verwaltet. Diese zentrale Zustandsverwaltung stellt sicher, dass Änderungen, beispielsweise das Hinzufügen einer Verletzung oder das Markieren eines Spielers als genesen, konsistent in der Teamübersicht und im jeweiligen Spielerprofil angezeigt werden.
+
+Die Anwendung ist in wiederverwendbare Komponenten gegliedert, darunter Komponenten für die Teamliste, die Spielerkarte sowie Formular-Komponenten für die Dateneingabe. Diese Struktur unterstützt eine klare Trennung der Verantwortlichkeiten und erleichtert die Nachvollziehbarkeit der Umsetzung.
+
+- **Daten & Schnittstellen:** 
+  Die zentrale Datenquelle des Prototyps ist eine MongoDB-Datenbank, in der sämtliche Spieler- und Verletzungsdaten persistent gespeichert werden. Die Datenhaltung erfolgt strukturiert, sodass Spielerinformationen sowie zugehörige Verletzungen eindeutig miteinander verknüpft sind.
+
+  Der Zugriff auf die Daten erfolgt über serverseitige Schnittstellen, welche vom Prototyp genutzt werden, um Spieler anzulegen, zu bearbeiten, zu löschen sowie Verletzungen zu erfassen oder zu aktualisieren. Diese Schnittstellen bilden die Grundlage für alle datenbezogenen Workflows und stellen sicher, dass Änderungen zuverlässig in der Datenbank gespeichert werden.
+
+  Das zugrunde liegende Datenmodell orientiert sich an zwei zentralen Entitäten: Spieler und Verletzungen. Ein Spieler enthält grundlegende Stammdaten sowie Referenzen auf zugehörige Verletzungseinträge. Verletzungen werden mit Informationen wie Datum, Beschreibung und Status erfasst und beeinflussen den aktuellen Verfügbarkeitsstatus des jeweiligen Spielers.
+
+  Durch diese Struktur ist gewährleistet, dass Daten konsistent verarbeitet und in allen relevanten Ansichten, insbesondere in der Teamübersicht und den Spielerprofilen, korrekt dargestellt werden.
+
+- **Besondere Entscheidungen:** 
+  Bei der Umsetzung des Prototyps wurde bewusst eine einfache und klare Statuslogik für Verletzungen gewählt, um die Verfügbarkeit eines Spielers eindeutig darzustellen, ohne zusätzliche medizinische Detailabstufungen einzuführen.
+
+  Eine zentrale konzeptionelle Entscheidung war die Fokussierung auf eine einzelne Nutzerrolle (Coach). Dadurch konnte auf eine Rollen- oder Rechteverwaltung verzichtet werden, was die Komplexität reduzierte und eine klare Ausrichtung auf die zentralen Workflows des Prototyps ermöglichte.
 
 ### 4.5 Validate
 - **URL der getesteten Version** (https://testversionofplayermanagementtool.netlify.app)
-- **Ziele der Prüfung:** _[welche Fragen sollen beantwortet werden?]_  
-- **Vorgehen:** _[moderiert/unmoderiert; remote/on‑site]_  
-- **Stichprobe:** _[Mit wem wurde getestet? Profil; Anzahl]_  
-- **Aufgaben/Szenarien:** _[Ausformulierte Testaufgaben]_  
-- **Kennzahlen & Beobachtungen:** _[z. B. Erfolgsquote, Zeitbedarf, qualitative Findings]_  
-- **Zusammenfassung der Resultate:** _[Wichtigste Erkenntnisse; 2–4 Sätze]_  
-- **Abgeleitete Verbesserungen:** _[priorisiert, kurz begründet]_  
-- **Umgesetzte Anpassungen [Optional]:** _[Im Prototyp umgesetzte Verbesserungen aufgrund der Erkenntnisse in der Evaluation]_ Idealerweise: Zwischenstände separat deployen, Änderungen dokumentieren.
+
+- **Ziele der Prüfung:** 
+
+  Ziel der Evaluation war es zu überprüfen, ob der entwickelte Prototyp intuitiv benutzbar ist und ob typische Aufgaben eines Teammanagers ohne zusätzliche Anleitung durchgeführt werden können. Dabei lag der Fokus auf der Verständlichkeit der zentralen Workflows sowie auf der Nachvollziehbarkeit der Interaktionen.
+
+- **Vorgehen:** 
+  Der Usability-Test wurde als moderierter Test vor Ort durchgeführt. Die Testpersonen bearbeiteten ein vorgegebenes Szenario selbstständig am PC, während ihre Interaktionen und Kommentare beobachtet wurden.
+
+  Die Testpersonen wurden dazu aufgefordert, ihre Gedanken während der Nutzung laut auszusprechen, um Unsicherheiten, Erwartungen und Probleme direkt erfassen zu können. (das Szenario ist im Anhang als Datei zu finden)
+
+- **Stichprobe:** 
+  Die Evaluation wurde mit 3 Testpersonen aus dem persönlichen Umfeld durchgeführt. Die Teilnehmenden verfügten über allgemeine Computererfahrung, hatten jedoch keine Vorkenntnisse zum PlayerManagementTool. Dadurch konnte überprüft werden, ob die Nutzung auch für Erstnutzende verständlich ist. 
+
+- **Aufgaben/Szenarien:** 
+Den Testpersonen wurde ein zusammenhängendes Szenario aus dem Alltag eines Teammanagers vorgegeben. Innerhalb dieses Szenarios mussten sie mehrere aufeinander aufbauende Aufgaben bearbeiten, darunter:
+
+  - Hinzufügen eines neuen Spielers inklusive Bild
+
+  - Bearbeiten bestehender Spielerdaten
+
+  - Überprüfen des Spielers in der Teamübersicht
+
+  - Erfassen einer Verletzung
+
+  - Markieren des Spielers als wieder einsatzbereit
+
+  - Entfernen des Spielers aus dem Team
+
+  Die vollständige Aufgabenbeschreibung und Testanleitung ist als separates Dokument im Repository und im Anhang abgelegt.
+
+- **Kennzahlen & Beobachtungen:** 
+  Während des Usability-Tests konnten alle Testpersonen die vorgegebenen Aufgaben grundsätzlich erfolgreich durchführen. Die meisten Unsicherheiten traten nicht bei der Funktionalität selbst, sondern bei Detailentscheidungen der Gestaltung und Interaktion auf.
+
+  Bei der Spielererstellung wurde angemerkt, dass die getrennte Eingabe von Vor- und Nachname als unnötig aufwändig empfunden wurde, da sie keinen direkten Mehrwert für die Nutzung bietet.
+
+  Zudem wurde beobachtet, dass neu hinzugefügte oder bearbeitete Spieler in der getesteten Version nicht unmittelbar in der Teamübersicht aktualisiert wurden. Erst nach einem manuellen Seiten-Refresh war der aktuelle Zustand sichtbar, was von den Testpersonen als irritierend wahrgenommen wurde.
+
+  Im Spielerprofil wurde der Hinweis "No Injury Record" aufgrund der geringen Kontrastwirkung als schwer lesbar empfunden. Auch war die Aktion "Mark as Recovered" bei gesunden Spielern zunächst nicht eindeutig deaktiviert, was zu Verwirrung führen konnte.
+
+  Positiv hervorgehoben wurde die Löschfunktion eines Spielers, da der Vorgang klar kommuniziert wurde und eindeutig machte, dass der Spieler endgültig aus dem System entfernt wird.
+
+  Weitere Beobachtungen betrafen die Sichtbarkeit des Add Player-Buttons, welcher bei längeren Spielerlisten durch Scrollen aus dem sichtbaren Bereich verschwand, sowie Verständnisfragen zur Bedeutung des BMI-Werts im Spielerprofil.
+
+- **Zusammenfassung der Resultate:** 
+  Die Evaluation zeigte, dass die grundlegenden Workflows des Prototyps verständlich und lösbar sind. Die Testpersonen konnten alle Aufgaben ohne externe Hilfe durchführen, auch wenn an einzelnen Stellen Rückfragen oder Unsicherheiten auftraten.
+
+  Die Rückmeldungen machten deutlich, dass kleinere gestalterische und interaktive Details einen grossen Einfluss auf die wahrgenommene Intuitivität haben. Viele der angesprochenen Punkte konnten im Nachhinein erklärt werden, waren jedoch für Erstnutzende nicht unmittelbar selbsterklärend.
+
+  Insgesamt bestätigte der Test, dass das zugrunde liegende Konzept tragfähig ist, gleichzeitig aber Optimierungspotenzial in der visuellen Rückmeldung und der Klarheit einzelner Interaktionen besteht. 
+
+- **Abgeleitete Verbesserungen:** 
+  Die höchste Priorität erhielt die unmittelbare Aktualisierung der Teamübersicht nach Änderungen an Spielern oder Verletzungen, da verzögerte Rückmeldungen die Orientierung der Nutzenden beeinträchtigten.
+
+  Ebenfalls priorisiert wurden Anpassungen an der visuellen Rückmeldung, insbesondere die bessere Lesbarkeit von Statushinweisen sowie das eindeutige Deaktivieren nicht verfügbarer Aktionen wie "Mark as Recovered" bei gesunden Spielern, um Fehlbedienungen zu vermeiden.
+
+  Eine mittlere Priorität erhielt die Verbesserung der Sichtbarkeit zentraler Aktionen, wie das permanente Anzeigen des "Add Player"-Buttons, da diese Funktion essenziell für den Einstieg in mehrere Workflows ist.
+
+  Geringer priorisiert, aber festgehalten, wurden inhaltliche Fragen wie die Bedeutung des BMI-Werts, da diese nicht direkt den Kernworkflow betreffen, jedoch Potenzial für zukünftige Erweiterungen aufzeigen.
+
+
+- **Umgesetzte Anpassungen [Optional]:** 
+  Die aus der Evaluation abgeleiteten Verbesserungen wurden direkt im bestehenden Prototyp umgesetzt. Dazu gehörte insbesondere die Anpassung der Zustandsaktualisierung, sodass Änderungen an Spielern und Verletzungen unmittelbar in der Teamübersicht sichtbar sind, ohne dass ein manueller Seiten-Refresh erforderlich ist.
+
+  Weiter wurden visuelle Anpassungen vorgenommen, um die Lesbarkeit und Verständlichkeit zu verbessern. Dazu zählen die Anpassung der Textfarbe bei Statushinweisen wie "No Injury Record", das visuelle Deaktivieren der Aktion "Mark as Recovered" bei gesunden Spielern sowie die dauerhafte Sichtbarkeit des "Add Player"-Buttons durch eine fixe Positionierung unabhängig vom Scrollverhalten.
+
+  Die identifizierten Anpassungen wurden iterativ umgesetzt und in der Versionsverwaltung dokumentiert. Ein separates Deployment einzelner Zwischenstände wurde nicht vorgenommen; stattdessen sind die Änderungen in den Commits "Fixing usability bugs noticed in usability tests (Part 1)" und "Fixing usability bugs noticed in usability tests (Part 2)" nachvollziehbar festgehalten.
 
 ## 5. Erweiterungen [Optional]
 Dokumentiert Erweiterungen über den Mindestumfang hinaus.
-- **Beschreibung & Nutzen:** _[Was wurde erweitert? Warum?]_  
-- **Umsetzung in Kürze:** _[Wie wurde es gemacht?]_  
-- **Abgrenzung zum Mindestumfang:** _[klar darstellen]_  
+- **Beschreibung & Nutzen:** 
 
-## 6. Projektorganisation [Optional]
-Beispiele:
-- **Repository & Struktur:** _[Link; kurze Strukturübersicht]_  
-- **Issue‑Management:** _[Vorgehen kurz beschreiben]_  
-- **Commit‑Praxis:** _[z. B. sprechende Commits]_
+  *Erweiterung: Filter- und Sortierfunktionen im Team-Roster*
+
+  Die Teamübersicht wurde um Filter- und Sortierfunktionen erweitert, um den Umgang mit grösseren Kadern zu erleichtern. Spieler können alphabetisch sowie nach Position, Alter, Körpergrösse, Gewicht und Vereinszugehörigkeit sortiert werden; zusätzlich lassen sich gezielt nur verletzte oder nur gesunde Spieler anzeigen.
+  Diese Erweiterung unterstützt den zentralen Use Case des Teammanagers, da Entscheidungen zu Aufstellungen, Trainings oder Kaderanpassungen häufig unter Zeitdruck erfolgen und eine schnelle Selektion relevanter Spieler erfordern.
+
+  *Erweiterung: Login und Zugriffsschutz*
+
+  Zur grundlegenden Absicherung des Prototyps wurde eine einfache Login-Funktion ergänzt, die den Zugriff auf das Tool auf den Teammanager beschränkt.
+  Auch wenn die Umsetzung bewusst minimal gehalten ist, stärkt diese Erweiterung den Use Case des Tools als internes Management-Werkzeug und verhindert, dass sensible Spielerinformationen ungeschützt zugänglich sind.
+
+  *Erweiterung: Trainings- und Spielplanung (Calendar & Events)*
+
+  Eine zentrale Erweiterung stellt die Trainings- und Spielplanung in Form eines Kalendersystems dar. Trainings und Spiele können als Events erfasst werden, inklusive Zeitraum, Typ und beteiligten Spielern; Überschneidungen werden dabei vermieden.
+  Für den Use Case des Coaches ermöglicht diese Erweiterung eine direkte Verbindung zwischen Spielerverfügbarkeit, Verletzungsstatus und anstehenden Belastungen, wodurch Trainings- und Spielplanung realistischer und nachvollziehbarer wird.
+
+  *Erweiterung: Zusätzliche Planungs- und Analyseartefakte*
+  Über den funktionalen Mindestumfang hinaus wurden zusätzliche methodische Artefakte wie eine Problemraum-Analyse, Proto-Personas, eine User Journey Map sowie ein szenariobasierter Usability-Test erstellt.
+  Diese Erweiterung stärkt den Use Case indirekt, indem sie sicherstellt, dass Design- und Implementierungsentscheidungen konsequent an den tatsächlichen Bedürfnissen von Coaches und Teammanagern ausgerichtet sind.
+
+- **Umsetzung in Kürze:** 
+
+  *Filter- und Sortierfunktionen im Team-Roster*:
+
+  Die Filter- und Sortierlogik wurde direkt in der Teamübersicht umgesetzt. Spielerlisten werden clientseitig nach definierten Kriterien (z. B. Name, Position, Alter, Status) sortiert und gefiltert, wobei der aktuell ausgewählte Zustand dynamisch aktualisiert wird.
+
+  *Login und Zugriffsschutz*:
+
+  Der Login wurde als einfache, clientseitige Authentifizierung umgesetzt. Ein vordefinierter Zugang ermöglicht das Ein- und Ausloggen, wobei der Zugriff auf die Hauptfunktionen des Prototyps an den Login-Zustand gebunden ist.
+
+  *Trainings- und Spielplanung (Calendar & Events)*:
+
+  Die Trainings- und Spielplanung wurde als eigenständiger Kalenderbereich realisiert. Events werden in einer separaten Datenstruktur gespeichert, können erstellt, bearbeitet und gelöscht werden und werden zeitlich validiert, sodass sich Termine nicht überschneiden. Zukünftige Events werden automatisch den entsprechenden Spielerprofilen zugeordnet und dort angezeigt.
+
+  *Zusätzliche Planungs- und Analyseartefakte*:
+
+  Die zusätzlichen Artefakte wurden hauptsätzlich im Unterricht erstellt. Sie sind im Repository abgelegt und dienen als dokumentierte Grundlage für Design-, Implementierungs- und Evaluationsentscheidungen.
+
+
+- **Abgrenzung zum Mindestumfang:** 
+
+  Der in Kapitel 3 beschriebene Mindestumfang beschränkt sich auf die grundlegende Verwaltung von Spielern sowie auf das Erfassen und Verwalten von Verletzungen inklusive Statusdarstellung. Die dort definierten Kernworkflows sind unabhängig von den in diesem Kapitel beschriebenen Erweiterungen vollständig nutzbar.
+
+  Die Filter- und Sortierfunktionen in der Teamübersicht, die Login-Funktion sowie die Trainings- und Spielplanung stellen funktionale Erweiterungen dar, die über die geforderten Kernfunktionen hinausgehen. Sie verbessern die Nutzung des Prototyps im Alltag, sind jedoch nicht erforderlich, um die Mindestanforderungen zu erfüllen.
+
+  Auch die zusätzlichen Planungs- und Analyseartefakte sind nicht Bestandteil des Mindestumfangs. Sie wurden ergänzend eingesetzt, um den Entwicklungsprozess methodisch zu vertiefen und die Qualität der getroffenen Entscheidungen zu erhöhen.
+
+  Sämtliche Erweiterungen wurden so umgesetzt, dass sie den Mindestumfang nicht beeinträchtigen, sondern diesen sinnvoll ergänzen.
+
+## 6. Projektorganisation 
+- **Repository & Struktur:** _
+  GITHUB: https://github.com/luispi010204/Prototyping_Project_playerManagementTool
+
+  Der gesamte Projektcode sowie die Projektdokumentation sind in einem zentralen GitHub-Repository abgelegt. 
+
+- **Issue‑Management:** 
+  Für das Projekt wurde bewusst auf ein formales Issue-Management verzichtet, da es sich um eine Einzelarbeit mit überschaubarem Umfang handelt. Stattdessen wurden offene Aufgaben, Bugs und Verbesserungen iterativ während der Entwicklung identifiziert und direkt umgesetzt.
+
+  Erkenntnisse aus der Evaluation wurden gezielt priorisiert und anschliessend in Form konkreter Code-Anpassungen umgesetzt.  
+
+- **Commit‑Praxis:** 
+  Die Entwicklung erfolgte iterativ mit regelmässigen Commits, die klar beschreiben, welche Änderungen vorgenommen wurden. Commit-Nachrichten (auf Englisch) wurden bewusst sprechend formuliert, um Entscheidungen und Anpassungen nachvollziehbar zu dokumentieren.
+
+  Insbesondere Verbesserungen aus dem Usability-Test wurden explizit in separaten Commits festgehalten (z. B. "Fixing usability bugs noticed in usability tests (Part 1/2)"), um den Zusammenhang zwischen Evaluation und Umsetzung transparent zu machen.
 
 ## 7. KI‑Deklaration
 Die folgende Deklaration ist verpflichtend und beschreibt den Einsatz von KI im Projekt.
 
 ### Eingesetzte KI‑Werkzeuge
-_[z. B. Copilot, ChatGPT, Claude, lokale Modelle; Version/Variante wenn bekannt]_
+  Im Projekt wurde ChatGPT (Version 5.2) sowie die Codex-Extension in Visual Studio Code eingesetzt. Andere KI-Werkzeuge wie GitHub Copilot wurden nicht verwendet.
 
 ### Zweck & Umfang
-_[**wie, wofür und in welchem Ausmass** wurde KI eingesetzt (z. B. Textentwürfe, Codevorschläge, Tests, Refactoring) sowie **Überlegungen** zu Qualität, Urheberrecht/Quellen und Prompt‑Vorgehen]_
+
+  KI wurde im Projekt unterstützend für die Entwicklung des Prototyps eingesetzt. Dies umfasste insbesondere Codevorschläge für die Umsetzung mit SvelteKit, die Klärung technischer Fragestellungen während der Entwicklung sowie Textentwürfe für die Projektdokumentation.
+
+  Zusätzlich wurde KI zur Konzeption des Usability-Tests eingesetzt, unter anderem zur Ausformulierung des Testszenarios und der Anleitung für die Testpersonen. Am aller hilfreichsten war KI bei der Planung der Implementierung um technische Sackgassen zu vermeiden.  Der Einsatz erfolgte iterativ und kontrolliert, wobei alle generierten Inhalte überprüft, angepasst oder verworfen wurden.
 
 ### Art der Beiträge
-_[konkret: welche Teile stammen (ganz/teilweise) aus KI‑Unterstützung?]_
+  Ein grosser Teil des Codes wurde mit Unterstützung von ChatGPT erstellt und über die Codex-Extension in Visual Studio Code generiert. Auch Entwürfe für Dokumentationstexte und das Testszenario stammen teilweise aus KI-gestützten Vorschlägen.
+
+  Die finalen Inhalte des Projekts ergeben sich jedoch aus einer Kombination von KI-Unterstützung und manueller Überarbeitung.
 
 ### Eigene Leistung (Abgrenzung)
-_[was ist eigenständig erarbeitet/überarbeitet worden?]_
+  Die konzeptionelle Arbeit, die Planung der Features, die Auswahl sinnvoller Funktionalitäten sowie alle gestalterischen und inhaltlichen Entscheidungen wurden eigenständig getroffen. Ebenso lag die Verantwortung für die Bewertung der KI-Ergebnisse, deren Anpassung und Integration vollständig bei mir.
+
+  KI-generierte Inhalte wurden nie ungeprüft übernommen, sondern stets kritisch hinterfragt und an die Anforderungen des Projekts angepasst.
 
 ### Reflexion
-_[Nutzen, Grenzen, Risiken/Qualitätssicherung]_
+  Der Einsatz von KI erwies sich als sehr hilfreich für die Entwicklung eines funktionsfähigen Prototyps in kurzer Zeit. Insbesondere bei klar formulierten und detaillierten Prompts lieferten die Ergebnisse eine hohe Qualität und beschleunigten den Entwicklungsprozess deutlich.
 
-### Prompt‑Vorgehen [Optional]
-_[wichtige Prompts/Workflows in Kürze]_
+  Gleichzeitig zeigte sich, dass ein bewusster Umgang mit KI notwendig ist, um die eigene Verantwortung nicht abzugeben. Die grösste Herausforderung bestand darin, Entscheidungen weiterhin selbst zu treffen und KI als Werkzeug und nicht als Ersatz für eigenes Denken zu nutzen.
 
-### Quellen & Rechte [Optional]
-_[verwendete Vorlagen/Assets/Modelle; Lizenz/Urheberrecht; Zitierweise]_
+### Prompt‑Vorgehen
+  Für die Arbeit mit KI wurde ein strukturiertes Prompt-Vorgehen verwendet. Initiale Anforderungen, Ideen und Beobachtungen wurden häufig über die Sprach- bzw. Diktatfunktion von ChatGPT erfasst. Dies erwies sich als besonders effizient, da komplexe Gedanken und Kontextinformationen schneller und natürlicher formuliert werden konnten als über reine Texteingabe.
 
-## 8. Anhang [Optional]
+  Auf Basis dieser gesprochenen Inhalte wurde jeweils ein sogenannter Meta-Prompt erstellt, dessen Ziel es war, einen klar strukturierten und technisch präzisen Codex-Prompt zu generieren. Dieser Codex-Prompt wurde anschliessend in Visual Studio Code über die Codex-Extension ausgeführt.
+
+  Die Codex-Prompts folgten dabei einer festen Vorlage, die den Änderungsauftrag klar gliederte. Diese enthielt unter anderem:
+
+  einen kurzen Task-Titel,
+
+  ein klar definiertes Ziel mit überprüfbarer Erfolgskondition,
+
+  den relevanten Kontext (betroffene Seiten, Komponenten und bestehende Logik),
+
+  eine strikt schrittweise Aufgabenbeschreibung,
+
+  explizite Einschränkungen zur Vermeidung unerwünschter Änderungen,
+
+  sowie Kriterien zur manuellen Überprüfung des Ergebnisses.
+
+  Durch diese Struktur konnte sichergestellt werden, dass Codex gezielt Änderungen am bestehenden SvelteKit-Projekt vornimmt, ohne unbeabsichtigt bestehende Funktionalität, Variablen oder UI-Elemente zu verändern. 
+
+  Ausserdem besitzt das Repository unter (/github/.copilot-instructions.md) einige Einschränkungen an Copilot.
+
+  **Link zur Vorlage:**: ![Prompt-Vorlage](static/docs/forAI/codex%20prompt%20template.md)
+
+  Nach jeder Ausführung wurden die generierten Code-Änderungen manuell überprüft. Erst nach inhaltlicher und funktionaler Kontrolle wurde entschieden, ob die Anpassungen übernommen, weiter angepasst oder verworfen werden. Dieses Vorgehen stellte sicher, dass die Verantwortung für Architektur, Qualität und Korrektheit jederzeit beim Projektverfasser blieb.
+
+### Quellen & Rechte
+  Sämtlicher Code und die Inhalte der Dokumentation wurden eigenständig erstellt oder mithilfe von KI-gestützten Werkzeugen generiert und anschliessend überprüft. Verwendete Bilder sind alle selbst gemacht. Die Verantwortung für Korrektheit und Urheberrecht liegt vollständig beim Projektverfasser.
+
+## 8. Anhang
 Beispiele:
-- **Testskript & Materialien:** _[Link/Datei]_  
-- **Rohdaten/Auswertung:** _[Link/Datei]_  
+- **Testskript & Materialien:**
+
+  ![TestSkript für Testperson](static/docs/testscripts/Anleitung%20für%20die%20Testperson1.docx)
+
+  Das ist das Dokument was der Testperson gegeben wurde um den Usability-Test auszuführen.
 
 ---
 
