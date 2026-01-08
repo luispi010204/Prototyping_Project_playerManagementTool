@@ -31,13 +31,7 @@
     }
   }
 
-  $: filteredPlayers = players.filter((p) => {
-    if (showHealthy && showInjured) return true;
-    if (showHealthy && !showInjured) return !p.isInjured;
-    if (!showHealthy && showInjured) return p.isInjured;
-    return false;
-  });
-
+  
   $: filteredPlayers = players.filter((p) => {
     if (showHealthy && showInjured) return true;
     if (showHealthy && !showInjured) return !p.isInjured;
@@ -277,25 +271,6 @@
     padding: 0;
   }
 
-  .status-header-title {
-  font-weight: inherit;
-  text-transform: uppercase;
-}
-
-.status-filters {
-  display: flex;
-  gap: 8px;
-  margin-top: 4px;
-  font-size: 12px;
-  opacity: 0.9;
-}
-
-.status-filters label {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  cursor: pointer;
-}
 
   .table-row {
     background: #17171b;
