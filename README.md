@@ -96,7 +96,7 @@ Ziel dieser Phase war es, den Problemraum klar zu verstehen, die relevanten Nutz
 
 - **Zielgruppenverständnis:** 
  
-  Zur Erarbeitung eines fundierten Zielgruppenverständnisses wurden zentrale Nutzergruppen identifiziert und in Form von Proto-Personas konkretisiert. Der Fokus liegt auf Coaches kleiner Sportteams, die als primäre Nutzende für die operative Planung von Trainings und Spielen verantwortlich sind und einen schnellen Überblick über den aktuellen Kaderstatus benötigen.Ergänzend wurde die Perspektive eines Clubpräsidenten als sekundärer Stakeholder berücksichtigt, dessen Interesse vor allem in der strukturierten und verlässlichen Verwaltung von Spielerinformationen liegt. Die Analyse dieser Rollen bildete die Grundlage für die Priorisierung der Anforderungen und die konsequente Ausrichtung des Prototyps auf die Bedürfnisse der primären Zielgruppe.
+  Zur Erarbeitung eines fundierten Zielgruppenverständnisses wurden zentrale Nutzergruppen identifiziert und in Form von Proto-Personas konkretisiert. Der Fokus liegt auf Coaches kleiner Sportteams, die als primäre Nutzende für die operative Planung von Trainings und Spielen verantwortlich sind und einen schnellen Überblick über den aktuellen Kaderstatus benötigen. Ergänzend wurde die Perspektive eines Clubpräsidenten als sekundärer Stakeholder berücksichtigt, dessen Interesse vor allem in der strukturierten und verlässlichen Verwaltung von Spielerinformationen liegt. Die Analyse dieser Rollen bildete die Grundlage für die Priorisierung der Anforderungen und die konsequente Ausrichtung des Prototyps auf die Bedürfnisse der primären Zielgruppe.
 
   Folgende **Problemraumanalyse** wurde erarbeitet:
   | Nutzergruppe | Bedürfnisse | Kontext / Herausforderungen | How Might We |
